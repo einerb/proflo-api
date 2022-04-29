@@ -2,7 +2,7 @@ import {
   IPagination,
   IPaginationWithDates,
   IPaginationWithDatesAndState,
-} from './interfaces/pagination.interface';
+} from './interfaces/pagination';
 
 export class PaginationVerifier {
   constructor() {}
@@ -54,7 +54,8 @@ export class PaginationVerifier {
         'This prop is *required* and references the maximun number of elements expected in the requested page',
       start:
         'This prop is *required* and references the start of the date range used to browse, should be in ISODate Format',
-      end: 'This prop is *required* and references the end of the date range used to browse, should be in ISODate Format',
+      end:
+        'This prop is *required* and references the end of the date range used to browse, should be in ISODate Format',
       state: 'This prop is *required* and refers to the status of the query.',
     };
   }

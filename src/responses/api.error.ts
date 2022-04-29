@@ -7,6 +7,7 @@ export enum ERROR {
   ROLE_NOT_FOUND,
   IDENTIFICATION_LENGTH,
   USER_UNAUTHORIZED,
+  SEARCH_EMPTY,
   NOTIFICATION_NOT_FOUND,
   FILE_WAS_NOT_UPLOADED,
   FILE_WAS_NOT_REMOVED,
@@ -35,33 +36,38 @@ export function GET_ERROR(error): Error {
       };
     case ERROR.IDENTIFICATION_LENGTH:
       return {
-        code: 6,
+        code: 12,
         error:
           'La longitud del número de identificación debe ser mayor que 6 y menor que 13!',
       };
     case ERROR.USER_UNAUTHORIZED:
       return {
-        code: 7,
+        code: 14,
         error: 'Las credenciales de accesos son incorrectas!',
+      };
+    case ERROR.SEARCH_EMPTY:
+      return {
+        code: 16,
+        error: 'No se encontraron coincidencias!',
       };
     case ERROR.NOTIFICATION_NOT_FOUND:
       return {
-        code: 8,
+        code: 19,
         error: 'Notificación no encontrado!',
       };
     case ERROR.FILE_WAS_NOT_UPLOADED:
       return {
-        code: 9,
+        code: 20,
         error: 'El archivo no fue cargado con éxito!',
       };
     case ERROR.FILE_WAS_NOT_REMOVED:
       return {
-        code: 10,
+        code: 21,
         error: 'El archivo no fue eliminado con éxito!',
       };
     case ERROR.PAGINATION_WAS_NOT_PROVIDED:
       return {
-        code: 11,
+        code: 22,
         error:
           'The pagination was not provided, verify the query params within the data prop.',
       };

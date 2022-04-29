@@ -2,7 +2,7 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   UpdateEvent,
-  InsertEvent,
+  InsertEvent
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -10,8 +10,7 @@ import { UserEntity } from '../user.entity';
 
 @EventSubscriber()
 export class UpdatePasswordSubscriber
-  implements EntitySubscriberInterface<UserEntity>
-{
+  implements EntitySubscriberInterface<UserEntity> {
   listenTo() {
     return UserEntity;
   }
@@ -24,10 +23,7 @@ export class UpdatePasswordSubscriber
     return this.hashPassword(event.entity);
   }
 
-  /* async beforeUpdate({
-    entity,
-    databaseEntity,
-  }: UpdateEvent<UserEntity>): Promise<void> {
+  /* async beforeUpdate({ entity, databaseEntity }: UpdateEvent<UserEntity>): Promise<void> {
     if (entity.password !== databaseEntity?.password) {
       await this.hashPassword(entity);
     }

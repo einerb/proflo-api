@@ -7,6 +7,8 @@ export enum SUCCESS {
   USER_VALIDATE,
   USER_LOGIN,
   PASSWORD_UPDATED,
+  REPORT,
+  SEARCH,
   NOTIFICATION_CREATED,
   NOTIFICATIONS_FOUND,
 }
@@ -33,27 +35,37 @@ export function GET_SUCCESS(success): Success {
       return { code: 5, message: 'Usuario eliminado exitosamente!' };
     case SUCCESS.USER_VALIDATE:
       return {
-        code: 6,
+        code: 14,
         message: 'El usuario ha sido validado!',
       };
     case SUCCESS.USER_LOGIN:
       return {
-        code: 7,
+        code: 15,
         message: 'El usuario ha iniciado sesión exitosamente!',
       };
     case SUCCESS.PASSWORD_UPDATED:
       return {
-        code: 8,
+        code: 17,
         message: 'Contraseña de usuario actualizada exitosamente!',
+      };
+    case SUCCESS.REPORT:
+      return {
+        code: 18,
+        message: 'Reporte encontrado!',
+      };
+    case SUCCESS.SEARCH:
+      return {
+        code: 19,
+        message: 'Resultados encontrados!',
       };
     case SUCCESS.NOTIFICATION_CREATED:
       return {
-        code: 9,
+        code: 23,
         message: 'Se ha generado una notificación de encontrado!',
       };
     case SUCCESS.NOTIFICATIONS_FOUND:
       return {
-        code: 10,
+        code: 24,
         message: 'Notificaciones encontradas!',
       };
   }

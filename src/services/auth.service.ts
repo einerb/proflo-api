@@ -1,11 +1,11 @@
 import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '../services/config.service';
 import { Injectable } from '@nestjs/common';
 
-import { ConfigService } from '../services/config.service';
-import { UserEntity } from 'src/entities/user.entity';
+import { UserEntity } from 'src/entities';
 import { UserService } from './user.service';
 import { JwtPayload } from '../entities/interfaces/jwt-payload.interface';
-import { ApiResponse, ERROR, SUCCESS } from 'src/responses';
+import { ApiResponse, SUCCESS } from 'src/responses';
 import { Config } from 'src/entities/enum/config.enum';
 
 @Injectable()

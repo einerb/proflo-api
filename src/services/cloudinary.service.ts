@@ -1,15 +1,13 @@
 import { v2 as Cloudinary, UploadApiResponse } from 'cloudinary';
 
-import { ConfigService } from './config.service';
+import { ConfigService } from 'src/services/config.service';
 import { Config } from 'src/entities/enum/config.enum';
 
 const _configService = new ConfigService();
 const bucket = _configService
   .get(Config.CLOUDINARY_CLOUD_NAME)
   .replace(/\s/gim, '');
-const key = _configService
-  .get(Config.CLOUDINARY_KEY)
-  .replace(/\s/gim, '');
+const key = _configService.get(Config.CLOUDINARY_KEY).replace(/\s/gim, '');
 const secret = _configService
   .get(Config.CLOUDINARY_SECRET)
   .replace(/\s/gim, '');

@@ -2,10 +2,7 @@ import { IsNotEmpty, IsInt } from 'class-validator';
 
 import { ERROR, GET_ERROR } from './api.error';
 import { GET_SUCCESS } from './api.success';
-import {
-  IPaginationWithDates,
-  IPagination,
-} from '../entities/interfaces/pagination.interface';
+import { IPaginationWithDates, IPagination } from '../entities/interfaces/pagination';
 import { PaginationVerifier } from 'src/entities/pagination';
 
 export class ApiResponseRecords {

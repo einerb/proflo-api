@@ -13,6 +13,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { RoleEntity } from './index';
+import { NotificationEntity } from './notification.entity';
+
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -26,29 +29,10 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: 'varchar', length: 45, nullable: true })
   lastname: string;
-/* 
+
   @ManyToOne(() => RoleEntity, (role) => role.id)
   @JoinColumn({ name: 'role_id' })
   rol: RoleEntity;
-
-  @OneToOne(() => PhotoEntity, (photo) => photo.id, {
-    eager: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'photo_id' })
-  photo: PhotoEntity; */
-
-  /* Relación Comment - Accessory */
-  /*  @OneToMany(() => CommentEntity, (comment) => comment.userOwner, {
-    cascade: true,
-  })
-  public users!: CommentEntity[]; */
-
-  /* Relación Notification - Accessory */
-  /* @OneToMany(() => NotificationEntity, (noti) => noti.user, {
-    cascade: true,
-  })
-  public notifications!: NotificationEntity[]; */
 
   @Column({ type: 'varchar', length: 70, nullable: true })
   occupation: string;

@@ -8,10 +8,24 @@ import { ConfigModule } from './modules/config.module';
 import { ConfigService } from './services/config.service';
 import { Config } from './entities/enum/config.enum';
 
+import {
+  AuthModule,
+  DatabaseModule,
+  NotificationModule,
+  RoleModule,
+  UserModule,
+} from './modules/index';
+
 @Module({
   imports: [
     MulterModule.register({ dest: './files' }),
     ScheduleModule.forRoot(),
+    DatabaseModule,
+    RoleModule,
+    UserModule,
+    AuthModule,
+    NotificationModule,
+    DatabaseModule,
     ConfigModule,
   ],
   controllers: [AppController],
