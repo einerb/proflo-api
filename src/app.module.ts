@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { MulterModule } from '@nestjs/platform-express';
 import { ScheduleModule } from '@nestjs/schedule';
 
 import { AppController } from './app.controller';
@@ -11,22 +10,22 @@ import { Config } from './entities/enum/config.enum';
 import {
   AuthModule,
   DatabaseModule,
-  NotificationModule,
   RoleModule,
   UserModule,
+  WorkshopModule
 } from './modules/index';
 
 @Module({
   imports: [
-    MulterModule.register({ dest: './files' }),
+    /*  MulterModule.register({ dest: './files' }), */
     ScheduleModule.forRoot(),
     DatabaseModule,
     RoleModule,
     UserModule,
     AuthModule,
-    NotificationModule,
     DatabaseModule,
     ConfigModule,
+    WorkshopModule
   ],
   controllers: [AppController],
   providers: [AppService],

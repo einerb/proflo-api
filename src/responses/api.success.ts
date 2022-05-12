@@ -11,6 +11,11 @@ export enum SUCCESS {
   SEARCH,
   NOTIFICATION_CREATED,
   NOTIFICATIONS_FOUND,
+  WORKSHOP_CREATED,
+  WORKSHOP_FOUND,
+  WORKSHOPS_FOUND,
+  WORKSHOP_UPDATED,
+  WORKSHOP_DELETED,
 }
 
 export interface Success {
@@ -33,6 +38,19 @@ export function GET_SUCCESS(success): Success {
       };
     case SUCCESS.USER_DELETED:
       return { code: 5, message: 'Usuario eliminado exitosamente!' };
+    case SUCCESS.WORKSHOP_CREATED:
+      return { code: 6, message: 'Taller creado exitosamente!' };
+    case SUCCESS.WORKSHOPS_FOUND:
+      return { code: 7, message: 'Talleres encontrados!' };
+    case SUCCESS.WORKSHOP_FOUND:
+      return { code: 8, message: 'Taller encontrado!' };
+    case SUCCESS.WORKSHOP_UPDATED:
+      return {
+        code: 9,
+        message: 'Información del taller actualizada exitosamente!',
+      };
+    case SUCCESS.WORKSHOP_DELETED:
+      return { code: 10, message: 'Taller eliminado exitosamente!' };
     case SUCCESS.USER_VALIDATE:
       return {
         code: 14,

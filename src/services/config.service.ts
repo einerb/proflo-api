@@ -18,7 +18,7 @@ export class ConfigService {
 
   private existsPath(env: string, path: string): boolean {
     const existsPath = fs.existsSync(path);
-    if (!existsPath) console.log(`${env}.env file does not exist`);
+    if (!existsPath) console.error(`${env}.env file does not exist`);
     return existsPath;
   }
 }

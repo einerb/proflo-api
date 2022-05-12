@@ -3,7 +3,7 @@ export interface JwtPayload {
   identification: number;
   name: string;
   lastname: string;
-  rol: number;
+  role: number;
   photo: number;
   users: number;
   occupation: string;

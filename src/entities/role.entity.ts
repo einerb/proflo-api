@@ -18,7 +18,7 @@ export class RoleEntity extends BaseEntity {
   @Column({ type: 'enum', enum: Roles, default: Roles.USER })
   role: Roles;
 
-  @OneToMany(() => UserEntity, (user) => user.rol, {
+  @OneToMany(() => UserEntity, (user) => user.role, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
     cascade: true,

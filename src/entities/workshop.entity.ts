@@ -5,11 +5,13 @@ import {
   BaseEntity,
   OneToMany,
   DeleteDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 import { UserEntity } from './user.entity';
 
-@Entity({ name: 'roles' })
+@Entity({ name: 'workshops' })
 export class WorkshopEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -26,11 +28,16 @@ export class WorkshopEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 10, nullable: true })
   phone: string;
 
-  @OneToMany(() => UserEntity, (user) => user.rol, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-    cascade: true,
-  })
+  @Column({ type: 'int', nullable: false })
+  limit_users: number;
+
+  @Column({ type: 'boolean', default: true })
+  state: boolean;
+
+  @Column({ type: 'int', nullable: true })
+  limit: number;
+
+  @ManyToMany(() => UserEntity, (user) => user.workshops)
   users: UserEntity[];
 
   @Column({

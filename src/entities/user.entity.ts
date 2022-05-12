@@ -7,14 +7,14 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { RoleEntity } from './index';
-import { NotificationEntity } from './notification.entity';
+import { WorkshopEntity } from './workshop.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
@@ -32,7 +32,7 @@ export class UserEntity extends BaseEntity {
 
   @ManyToOne(() => RoleEntity, (role) => role.id)
   @JoinColumn({ name: 'role_id' })
-  rol: RoleEntity;
+  role: RoleEntity;
 
   @Column({ type: 'varchar', length: 70, nullable: true })
   occupation: string;
@@ -58,6 +58,15 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'boolean', default: true })
   state: boolean;
 
+  @ManyToMany(() => WorkshopEntity, (workshop) => workshop.users, {
+    cascade: true,
+  })
+  @JoinTable({
+    name: 'workshops_users',
+    joinColumns: [{ name: 'userId' }, { name: 'workshopId' }],
+  })
+  workshops: WorkshopEntity[];
+
   @Column({
     name: 'created_at',
     type: 'timestamp',
@@ -77,7 +86,6 @@ export class UserEntity extends BaseEntity {
   public deletedAt: Date;
 
   @BeforeInsert()
-  @BeforeUpdate()
   async hashPassword() {
     if (this.password) {
       this.password = await bcrypt.hash(this.password, 10);

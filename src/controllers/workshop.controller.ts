@@ -23,54 +23,61 @@ import {
 
 import { ApiResponse } from '../responses';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateUserDto, UpdateUserDto } from 'src/entities/dto/index';
+import { CreateWorkshopDto } from 'src/entities/dto/index';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
-import { AuthService, UserService } from 'src/services/';
-import { UpdatePasswordDto } from 'src/entities/dto/update-password.dto';
+import { AuthService, WorkshopService } from 'src/services/';
+import { UpdateWorkshopDto } from 'src/entities/dto/update-workshop.dto';
 
-@Controller('user')
-export class UserController {
+@Controller('workshop')
+export class WorkshopController {
   constructor(
+    private readonly workshopService: WorkshopService,
     private readonly authService: AuthService,
-    private readonly userService: UserService,
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Get(':identification')
-  async getById(
-    @Param('identification', ParseIntPipe) identification: number,
+  @Get()
+  async getAll(
     @Req() request,
-  ) {
+    @Query() pagination: IPaginationWithDates,
+  ): Promise<ApiResponse> {
     const rawToken = request.headers['authorization'].split(' ')[1];
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
-    return await this.userService.findById(tokenDecode.role, identification);
+    return await this.workshopService.getAll(tokenDecode.role, pagination);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':nit')
+  async getById(@Param('nit') nit: string, @Req() request) {
+    const rawToken = request.headers['authorization'].split(' ')[1];
+    const tokenDecode = this.authService.decodingJWT(rawToken);
+
+    return await this.workshopService.findById(tokenDecode, nit);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post()
-  async create(@Body() dto: CreateUserDto, @Req() request) {
+  async create(@Body() dto: CreateWorkshopDto, @Req() request) {
     const rawToken = request.headers['authorization'].split(' ')[1];
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
-    return await this.userService.create(tokenDecode.role, dto);
-  }
-
-  @UsePipes(new ValidationPipe({ whitelist: true }))
-  @Post('Admin')
-  async createTest(@Body() dto: CreateUserDto) {
-    return await this.userService.createTest(dto);
+    return await this.workshopService.create(tokenDecode.role, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true }))
-  @Put(':identification')
+  @Put(':nit')
   async update(
-    @Param('identification', ParseIntPipe) identification: number,
-    @Body() dto: UpdateUserDto,
+    @Param('nit') nit: string,
+    @Body() dto: UpdateWorkshopDto,
+    @Req() request,
   ) {
-    return await this.userService.update(identification, dto);
+    const rawToken = request.headers['authorization'].split(' ')[1];
+    const tokenDecode = this.authService.decodingJWT(rawToken);
+
+    return await this.workshopService.update(tokenDecode, nit, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -79,6 +86,6 @@ export class UserController {
     const rawToken = request.headers['authorization'].split(' ')[1];
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
-    return await this.userService.delete(tokenDecode.role, id);
+    return await this.workshopService.delete(tokenDecode.role, id);
   }
 }

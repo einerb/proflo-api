@@ -32,7 +32,15 @@ export class CreateUserDto {
   @IsOptional()
   lastname?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description:
+      'Se manejara 3 tipos de roles los cuales tendran ciertas acciones permitidas',
+    enum: [
+      { id: 1, role: 'ROOT' },
+      { id: 2, role: 'ADMIN' },
+      { id: 3, role: 'USER' },
+    ],
+  })
   @IsNumber()
   @IsNotEmpty()
   role_id: number;
@@ -73,4 +81,9 @@ export class CreateUserDto {
   @IsBoolean()
   @IsNotEmpty()
   state?: boolean;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  workshopId?: number;
 }

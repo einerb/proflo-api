@@ -11,6 +11,12 @@ export enum ERROR {
   NOTIFICATION_NOT_FOUND,
   FILE_WAS_NOT_UPLOADED,
   FILE_WAS_NOT_REMOVED,
+  REQUEST_UNAUTHORIZED,
+  WORKSHOP_FOUND,
+  WORKSHOP_NOT_FOUND,
+  WORKSHOPS_NOT_FOUND,
+  WORKSHOP_ADMIN_LIMIT,
+  WORKSHOP_USERS_COUNT,
 }
 
 export interface Error {
@@ -33,6 +39,24 @@ export function GET_ERROR(error): Error {
         code: 5,
         error:
           'El rol asignado no existe, los roles permitidos son admin y user!',
+      };
+    case ERROR.WORKSHOP_FOUND:
+      return { code: 6, error: 'El taller ya existe!' };
+    case ERROR.WORKSHOP_NOT_FOUND:
+      return { code: 7, error: 'Taller no existe!' };
+    case ERROR.WORKSHOP_NOT_FOUND:
+      return { code: 8, error: 'No hay talleres!' };
+    case ERROR.WORKSHOP_ADMIN_LIMIT:
+      return {
+        code: 9,
+        error:
+          'La cantidad de Administradores agregados supera el límite del taller. Por favor, comuníquese con el Administrador de la plataforma!',
+      };
+    case ERROR.WORKSHOP_USERS_COUNT:
+      return {
+        code: 10,
+        error:
+          'OPERACIÓN DELICADA: El taller tiene usuarios asociados. Por favor, elimine los usuarios antes de eliminar el taller!',
       };
     case ERROR.IDENTIFICATION_LENGTH:
       return {
@@ -70,6 +94,11 @@ export function GET_ERROR(error): Error {
         code: 22,
         error:
           'The pagination was not provided, verify the query params within the data prop.',
+      };
+    case ERROR.REQUEST_UNAUTHORIZED:
+      return {
+        code: 23,
+        error: 'Usuario NO PERMITIDO para realizar ésta operación!',
       };
   }
 }

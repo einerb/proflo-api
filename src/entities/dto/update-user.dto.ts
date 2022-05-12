@@ -43,11 +43,6 @@ export class UpdateUserDto {
   phone?: string;
 
   @ApiProperty()
-  @IsEmail()
-  @IsNotEmpty()
-  email?: string;
-
-  @ApiProperty()
   @IsBoolean()
   @IsOptional()
   state?: boolean;

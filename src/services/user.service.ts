@@ -6,58 +6,76 @@ import { ApiResponseRecords } from 'src/responses/api.response';
 import { CreateUserDto, UpdateUserDto } from 'src/entities/dto/index';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
 import { PaginationVerifier } from 'src/entities/pagination';
-import { RoleEntity, UserEntity } from 'src/entities/index';
+import { WorkshopEntity, UserEntity } from 'src/entities/index';
 import { UpdatePasswordDto } from 'src/entities/dto/update-password.dto';
-import { UserRepository, RoleRepository } from '../repositories/index';
+import { UserRepository, WorkshopRepository } from '../repositories/index';
+import { Roles } from 'src/entities/enum/role.enum';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity) private userRepository: UserRepository,
-    @InjectRepository(RoleEntity) private roleRepository: RoleRepository,
+
+    @InjectRepository(WorkshopEntity)
+    private workshopRepository: WorkshopRepository,
   ) {}
 
-  async getAll(
-    identification: number,
-    pagination: IPaginationWithDates,
-  ): Promise<ApiResponse> {
-    if (!PaginationVerifier.verifyIPagination(pagination))
-      return ApiResponse.paginationWithDatesNotProvidedError();
+  permissionRoles(role, user) {
+    let root = [1, 2, 3];
+    let admin = [2, 3];
+    let client = [3];
 
-    const result = await this.userRepository
-      .createQueryBuilder('user')
-      .leftJoinAndSelect('user.rol', 'role')
-      .leftJoinAndSelect('user.photo', 'photo')
-      .where(
-        'user.created_at >= :start AND user.created_at <= :end AND user.identification != :identification AND user.role_id = 1',
-        {
-          start: pagination.start,
-          end: pagination.end,
-          identification: identification,
-        },
-      )
-      .skip(Math.max(0, (pagination.pageNumber - 1) * pagination.pageElements))
-      .take(pagination.pageElements)
-      .orderBy('user.createdAt', 'DESC')
-      .getManyAndCount();
+    if (user === Roles.ROOT && root.includes(role)) {
+      return true;
+    } else if (user === Roles.ADMIN && admin.includes(role)) {
+      return true;
+    } else if (user === Roles.USER && client.includes(role)) {
+      return true;
+    }
 
-    if (!result.length) new ApiResponse(false, ERROR.USERS_NOT_FOUND);
-
-    return new ApiResponse(
-      true,
-      SUCCESS.USERS_FOUND,
-      new ApiResponseRecords(result, pagination),
-    );
+    return false;
   }
 
-  async findById(identification: number): Promise<ApiResponse> {
-    const user = await this.userRepository.findOne({
-      where: {
+  async findById(
+    userDecode: any,
+    identification: number,
+  ): Promise<ApiResponse> {
+    let role;
+    const preUser = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .where('user.identification = :identification AND user.state = true', {
         identification: identification,
-      },
-    });
+      })
+      .getOne();
 
-    if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
+    switch (userDecode.role) {
+      case Roles.ROOT:
+        role = 0;
+        break;
+      case Roles.ADMIN:
+        role = 2;
+        break;
+      default:
+        role = 3;
+    }
+
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .where(
+        'user.identification = :identification AND user.state = true AND user.role_id >= :role',
+        {
+          identification: identification,
+          role: role,
+        },
+      )
+      .getOne();
+
+    if (!preUser) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
+
+    if (!this.permissionRoles(preUser.role.id, userDecode.role))
+      return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
 
     return new ApiResponse(true, SUCCESS.USER_FOUND, user);
   }
@@ -74,7 +92,7 @@ export class UserService {
     return await this.userRepository
       .createQueryBuilder('user')
       .addSelect('user.password')
-      .leftJoinAndSelect('user.rol', 'role')
+      .leftJoinAndSelect('user.role', 'role')
       .where('user.email = :email', { email: email })
       .getOne();
   }
@@ -97,30 +115,66 @@ export class UserService {
     return user ? true : false;
   }
 
-  async create(dto: CreateUserDto): Promise<ApiResponse> {
+  async create(userDecode: any, dto: CreateUserDto): Promise<ApiResponse> {
+    const workshop = await this.workshopRepository.findOne({
+      where: { id: dto.workshopId },
+    });
+    const userLimit = await this.workshopRepository
+      .createQueryBuilder('workshop')
+      .select('workshop.id')
+      .loadRelationCountAndMap('workshop.limit', 'workshop.users')
+      .where('workshop.id = :id AND workshop.state = true', {
+        id: dto.workshopId,
+      })
+      .getMany();
+
+    if (!workshop) return new ApiResponse(false, ERROR.WORKSHOP_NOT_FOUND);
+
     if (await this.ifExistById(dto.identification))
       return new ApiResponse(false, ERROR.USER_EXIST);
 
     if (await this.ifExistByEmail(dto.email))
       return new ApiResponse(false, ERROR.EMAIL_EXIST);
 
-    const role = await this.roleRepository.findOne({
-      where: { id: dto.role_id },
-    });
-    if (!role) return new ApiResponse(false, ERROR.ROLE_NOT_FOUND);
+    let roleAllow;
+    if (userDecode.role === Roles.ROOT) {
+      roleAllow = dto.role_id > 0;
+    } else if (userDecode.role === Roles.ADMIN) {
+      roleAllow = dto.role_id >= 2;
+    } else {
+      return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
+    }
 
-    const user = await this.userRepository.create(dto);
-    user.rol = <any>dto.role_id;
-    await user.save();
+    let role;
+    if (roleAllow) {
+      role = dto.role_id;
+    } else {
+      return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
+    }
 
-    return new ApiResponse(true, SUCCESS.USER_CREATED);
+    if (!workshop && userDecode.role !== Roles.ROOT) {
+      return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
+    } else {
+      if (userLimit[0]?.limit >= workshop.limit_users) {
+        return new ApiResponse(false, ERROR.WORKSHOP_ADMIN_LIMIT);
+      } else {
+        let user = await this.userRepository.create(dto);
+        user.role = <any>role;
+        user = await this.userRepository.save(user);
+        user.workshops = [workshop];
+        await this.userRepository.save(user);
+
+        return new ApiResponse(true, SUCCESS.USER_CREATED);
+      }
+    }
   }
 
-  removeExtensionFromFile(filename: string): string {
-    const parts = filename.split('.');
-    const ext = `.${parts[1]}`;
-    const response = filename.replace(ext, '');
-    return response;
+  async createTest(dto: CreateUserDto): Promise<ApiResponse> {
+    let user = await this.userRepository.create(dto);
+    user.role = <any>1;
+    user = await this.userRepository.save(user);
+
+    return new ApiResponse(true, SUCCESS.USER_CREATED);
   }
 
   async update(
@@ -133,48 +187,31 @@ export class UserService {
 
     if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
 
-    const result = await this.userRepository.update(
-      { identification: identification },
-      dto,
-    );
+    await this.userRepository.update({ identification: identification }, dto);
 
-    return new ApiResponse(true, SUCCESS.USER_UPDATED, result);
+    return new ApiResponse(true, SUCCESS.USER_UPDATED);
   }
 
-  async updatePassword(
-    identification: number,
-    password: UpdatePasswordDto,
-  ): Promise<ApiResponse> {
-    const user = await this.userRepository.findOne({
-      where: { identification: identification },
-    });
+  async delete(userDecode: any, id: number): Promise<any> {
+    if (userDecode.role === Roles.ROOT || userDecode.role === Roles.ADMIN) {
+      const user = await this.userRepository.findOne({
+        where: { id: id },
+      });
 
-    if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
+      if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
 
-    const result = await this.userRepository.update(
-      { identification: identification },
-      password,
-    );
+      this.userRepository
+        .createQueryBuilder()
+        .delete()
+        .from(UserEntity)
+        .where('id = :id', {
+          id: id,
+        })
+        .execute();
 
-    return new ApiResponse(true, SUCCESS.PASSWORD_UPDATED, result);
-  }
-
-  async delete(id: number): Promise<any> {
-    const user = await this.userRepository.findOne({
-      where: { id: id },
-    });
-
-    if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
-
-    this.userRepository
-      .createQueryBuilder()
-      .delete()
-      .from(UserEntity)
-      .where('id = :id', {
-        id: id,
-      })
-      .execute();
-
-    return new ApiResponse(true, SUCCESS.USER_DELETED);
+      return new ApiResponse(true, SUCCESS.USER_DELETED);
+    } else {
+      return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
+    }
   }
 }
