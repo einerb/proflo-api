@@ -5,7 +5,9 @@ import {
   BaseEntity,
   OneToMany,
   DeleteDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { UserEntity } from './user.entity';
 
 @Entity({ name: 'licenses' })
 export class LicenseEntity extends BaseEntity {
@@ -26,6 +28,9 @@ export class LicenseEntity extends BaseEntity {
 
   @Column({ type: 'boolean', nullable: true })
   state: boolean;
+
+  @ManyToOne(() => UserEntity, (user) => user.licenses)
+  users: UserEntity;
 
   @Column({
     name: 'created_at',

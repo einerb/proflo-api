@@ -16,6 +16,7 @@ import {
 
 import { CarEntity } from './car.entity';
 import { RoleEntity } from './index';
+import { LicenseEntity } from './license.entity';
 import { ServiceEntity } from './service.entity';
 import { WorkshopEntity } from './workshop.entity';
 
@@ -66,7 +67,10 @@ export class UserEntity extends BaseEntity {
   car: CarEntity;
 
   @OneToMany(() => ServiceEntity, (service) => service.users)
-  services: ServiceEntity[]
+  services: ServiceEntity[];
+
+  @OneToMany(() => LicenseEntity, (license) => license.users)
+  licenses: LicenseEntity[];
 
   @ManyToMany(() => WorkshopEntity, (workshop) => workshop.users, {
     cascade: true,
