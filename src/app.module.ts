@@ -9,23 +9,30 @@ import { Config } from './entities/enum/config.enum';
 
 import {
   AuthModule,
+  CarModule,
   DatabaseModule,
+  LicenseModule,
+  NewModule,
   RoleModule,
+  ServiceModule,
   UserModule,
-  WorkshopModule
+  WorkshopModule,
 } from './modules/index';
 
 @Module({
   imports: [
     /*  MulterModule.register({ dest: './files' }), */
     ScheduleModule.forRoot(),
-    DatabaseModule,
+    CarModule,
+    LicenseModule,
+    NewModule,
     RoleModule,
+    ServiceModule,
     UserModule,
     AuthModule,
     DatabaseModule,
     ConfigModule,
-    WorkshopModule
+    WorkshopModule,
   ],
   controllers: [AppController],
   providers: [AppService],

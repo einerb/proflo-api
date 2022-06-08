@@ -7,26 +7,15 @@ import {
   ParseIntPipe,
   Post,
   Put,
-  Query,
   Req,
   UseGuards,
-  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiTags,
-  ApiOperation,
-  ApiResponse as AR,
-} from '@nestjs/swagger';
 
-import { ApiResponse } from '../responses';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto, UpdateUserDto } from 'src/entities/dto/index';
-import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
 import { AuthService, UserService } from 'src/services/';
-import { UpdatePasswordDto } from 'src/entities/dto/update-password.dto';
 
 @Controller('user')
 export class UserController {
@@ -57,11 +46,11 @@ export class UserController {
     return await this.userService.create(tokenDecode.role, dto);
   }
 
-  @UsePipes(new ValidationPipe({ whitelist: true }))
+  /* @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('Admin')
   async createTest(@Body() dto: CreateUserDto) {
     return await this.userService.createTest(dto);
-  }
+  } */
 
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true }))

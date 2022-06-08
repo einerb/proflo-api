@@ -2,12 +2,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 
 import { ApiResponse, SUCCESS, ERROR } from '../responses';
-import { ApiResponseRecords } from 'src/responses/api.response';
 import { CreateUserDto, UpdateUserDto } from 'src/entities/dto/index';
-import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
-import { PaginationVerifier } from 'src/entities/pagination';
 import { WorkshopEntity, UserEntity } from 'src/entities/index';
-import { UpdatePasswordDto } from 'src/entities/dto/update-password.dto';
 import { UserRepository, WorkshopRepository } from '../repositories/index';
 import { Roles } from 'src/entities/enum/role.enum';
 
