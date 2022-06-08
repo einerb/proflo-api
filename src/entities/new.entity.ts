@@ -3,9 +3,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   BaseEntity,
-  OneToMany,
   DeleteDateColumn,
+  ManyToOne,
 } from 'typeorm';
+
+import { ServiceEntity } from './service.entity';
 
 @Entity({ name: 'news' })
 export class NewEntity extends BaseEntity {
@@ -17,6 +19,9 @@ export class NewEntity extends BaseEntity {
 
   @Column({ type: 'text', nullable: false })
   description: string;
+
+  @ManyToOne(() => ServiceEntity, (service) => service.news)
+  services: ServiceEntity;
 
   @Column({
     name: 'created_at',

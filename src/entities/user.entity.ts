@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt';
 import {
   BaseEntity,
   BeforeInsert,
-  BeforeUpdate,
   Column,
   DeleteDateColumn,
   Entity,
@@ -10,10 +9,14 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { CarEntity } from './car.entity';
 import { RoleEntity } from './index';
+import { ServiceEntity } from './service.entity';
 import { WorkshopEntity } from './workshop.entity';
 
 @Entity({ name: 'users' })
@@ -57,6 +60,13 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: 'boolean', default: true })
   state: boolean;
+
+  @OneToOne(() => CarEntity)
+  @JoinColumn()
+  car: CarEntity;
+
+  @OneToMany(() => ServiceEntity, (service) => service.users)
+  services: ServiceEntity[]
 
   @ManyToMany(() => WorkshopEntity, (workshop) => workshop.users, {
     cascade: true,

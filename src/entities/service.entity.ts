@@ -5,9 +5,12 @@ import {
   BaseEntity,
   OneToMany,
   DeleteDateColumn,
+  ManyToOne,
 } from 'typeorm';
 
 import { States } from './enum/state.enum';
+import { NewEntity } from './new.entity';
+import { UserEntity } from './user.entity';
 
 @Entity({ name: 'services' })
 export class ServiceEntity extends BaseEntity {
@@ -19,6 +22,12 @@ export class ServiceEntity extends BaseEntity {
 
   @Column({ type: 'enum', enum: States, default: States.CREATED })
   state: States;
+
+  @OneToMany(() => NewEntity, (newE) => newE.services)
+  news: NewEntity[];
+
+  @ManyToOne(() => UserEntity, (user) => user.services)
+  users: UserEntity;
 
   @Column({
     name: 'created_at',
