@@ -59,6 +59,9 @@ export class UserService {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('user.car', 'car')
+      .leftJoinAndSelect('user.licenses', 'licenses')
+      .leftJoinAndSelect('user.services', 'services')
       .where(
         'user.identification = :identification AND user.state = true AND user.role_id >= :role',
         {
@@ -66,7 +69,7 @@ export class UserService {
           role: role,
         },
       )
-      .getOne();
+      .getMany();
 
     if (!preUser) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
 

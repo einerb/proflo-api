@@ -16,6 +16,10 @@ export enum SUCCESS {
   WORKSHOPS_FOUND,
   WORKSHOP_UPDATED,
   WORKSHOP_DELETED,
+  CAR_FOUND,
+  CAR_CREATED,
+  CAR_UPDATED,
+  CAR_DELETED,
 }
 
 export interface Success {
@@ -86,5 +90,19 @@ export function GET_SUCCESS(success): Success {
         code: 24,
         message: 'Notificaciones encontradas!',
       };
+    case SUCCESS.CAR_FOUND:
+      return {
+        code: 25,
+        message: 'Vehiculo encontrada!',
+      };
+    case SUCCESS.CAR_CREATED:
+      return { code: 26, message: 'Vehiculo creado exitosamente!' };
+    case SUCCESS.CAR_UPDATED:
+      return {
+        code: 27,
+        message: 'Información del vehiculo actualizada exitosamente!',
+      };
+    case SUCCESS.CAR_DELETED:
+      return { code: 28, message: 'Vehiculo eliminado exitosamente!' };
   }
 }

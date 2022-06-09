@@ -17,6 +17,9 @@ export enum ERROR {
   WORKSHOPS_NOT_FOUND,
   WORKSHOP_ADMIN_LIMIT,
   WORKSHOP_USERS_COUNT,
+  CAR_NOT_FOUND,
+  CAR_EXIST,
+  PLATE_NOT_VALID,
 }
 
 export interface Error {
@@ -100,5 +103,14 @@ export function GET_ERROR(error): Error {
         code: 23,
         error: 'Usuario NO PERMITIDO para realizar ésta operación!',
       };
+    case ERROR.CAR_NOT_FOUND:
+      return {
+        code: 24,
+        error: 'Vehiculo no encontrado!',
+      };
+    case ERROR.CAR_EXIST:
+      return { code: 25, error: 'Vehiculo ya existe!' };
+    case ERROR.PLATE_NOT_VALID:
+      return { code: 26, error: 'La placa del vehiculo no es valida!' };
   }
 }

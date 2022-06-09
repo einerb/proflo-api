@@ -96,7 +96,7 @@ export class CarEntity extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   levelShielding: string;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'date', nullable: true})
   dateShielding: Date;
 
   @Column({ type: 'varchar', length: 7, nullable: false })

@@ -46,11 +46,11 @@ export class UserController {
     return await this.userService.create(tokenDecode.role, dto);
   }
 
-  /* @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('Admin')
   async createTest(@Body() dto: CreateUserDto) {
     return await this.userService.createTest(dto);
-  } */
+  }
 
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true }))
