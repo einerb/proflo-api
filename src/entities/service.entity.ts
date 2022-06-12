@@ -17,8 +17,11 @@ export class ServiceEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 20, nullable: false })
+  @Column({ type: 'text', nullable: false })
   hash: string;
+
+  @Column({ type: 'text', nullable: false })
+  description: string;
 
   @Column({ type: 'enum', enum: States, default: States.CREATED })
   state: States;

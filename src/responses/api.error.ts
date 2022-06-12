@@ -20,6 +20,16 @@ export enum ERROR {
   CAR_NOT_FOUND,
   CAR_EXIST,
   PLATE_NOT_VALID,
+  SERVICE_NOT_FOUND,
+  STATES_NOT_FOUND,
+  SERVICE_ACTIVE,
+  HAS_CAR,
+  CAR_UNIQUE_VIN,
+  CAR_UNIQUE_SERIE,
+  CAR_UNIQUE_MOTOR,
+  CAR_UNIQUE_CHASIS,
+  LICENSE_NOT_FOUND,
+  LICENSE_EXIST,
 }
 
 export interface Error {
@@ -96,7 +106,7 @@ export function GET_ERROR(error): Error {
       return {
         code: 22,
         error:
-          'The pagination was not provided, verify the query params within the data prop.',
+          'La paginación no fue proporcionada, verifique los parámetros de consulta dentro de la prop de datos.',
       };
     case ERROR.REQUEST_UNAUTHORIZED:
       return {
@@ -106,11 +116,64 @@ export function GET_ERROR(error): Error {
     case ERROR.CAR_NOT_FOUND:
       return {
         code: 24,
-        error: 'Vehiculo no encontrado!',
+        error: 'Vehículo no encontrado!',
       };
     case ERROR.CAR_EXIST:
-      return { code: 25, error: 'Vehiculo ya existe!' };
+      return { code: 25, error: 'Vehículo ya existe!' };
     case ERROR.PLATE_NOT_VALID:
-      return { code: 26, error: 'La placa del vehiculo no es valida!' };
+      return { code: 26, error: 'La placa del Vehículo no es válida!' };
+    case ERROR.SERVICE_NOT_FOUND:
+      return {
+        code: 27,
+        error: 'Servicio no encontrado!',
+      };
+    case ERROR.STATES_NOT_FOUND:
+      return {
+        code: 28,
+        error:
+          'El estado no existe. Estados permitidos: CREATED, ACTIVE O COMPLETED!',
+      };
+    case ERROR.SERVICE_ACTIVE:
+      return {
+        code: 29,
+        error:
+          'Tiene un servicio activo. Debe completar el que se encuentra activo antes de continuar!',
+      };
+    case ERROR.HAS_CAR:
+      return {
+        code: 30,
+        error:
+          'Para crear el servicio, el usuario debe tener un Vehículo asociado!',
+      };
+    case ERROR.CAR_UNIQUE_CHASIS:
+      return {
+        code: 31,
+        error: 'El número de chasis ya se encuentra registrado!',
+      };
+    case ERROR.CAR_UNIQUE_SERIE:
+      return {
+        code: 32,
+        error: 'El número de serie ya se encuentra registrado!',
+      };
+    case ERROR.CAR_UNIQUE_MOTOR:
+      return {
+        code: 33,
+        error: 'El número de motor ya se encuentra registrado!',
+      };
+    case ERROR.CAR_UNIQUE_VIN:
+      return {
+        code: 34,
+        error: 'El número VIN ya se encuentra registrado!',
+      };
+    case ERROR.LICENSE_NOT_FOUND:
+      return {
+        code: 35,
+        error: 'Licencia  no encontrada!',
+      };
+    case ERROR.LICENSE_EXIST:
+      return {
+        code: 36,
+        error: 'La categoria de la licencia ya se encuentra registrado!',
+      };
   }
 }

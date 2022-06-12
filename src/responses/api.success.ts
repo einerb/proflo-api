@@ -20,6 +20,13 @@ export enum SUCCESS {
   CAR_CREATED,
   CAR_UPDATED,
   CAR_DELETED,
+  SERVICE_FOUND,
+  SERVICE_CREATED,
+  SERVICE_UPDATED,
+  SERVICE_DELETED,
+  LICENSE_CREATED,
+  LICENSE_UPDATED,
+  LICENSE_DELETED,
 }
 
 export interface Success {
@@ -93,16 +100,39 @@ export function GET_SUCCESS(success): Success {
     case SUCCESS.CAR_FOUND:
       return {
         code: 25,
-        message: 'Vehiculo encontrada!',
+        message: 'Vehículo encontrada!',
       };
     case SUCCESS.CAR_CREATED:
-      return { code: 26, message: 'Vehiculo creado exitosamente!' };
+      return { code: 26, message: 'Vehículo creado exitosamente!' };
     case SUCCESS.CAR_UPDATED:
       return {
         code: 27,
-        message: 'Información del vehiculo actualizada exitosamente!',
+        message: 'Información del Vehículo actualizada exitosamente!',
       };
     case SUCCESS.CAR_DELETED:
-      return { code: 28, message: 'Vehiculo eliminado exitosamente!' };
+      return { code: 28, message: 'Vehículo eliminado exitosamente!' };
+    case SUCCESS.SERVICE_FOUND:
+      return {
+        code: 29,
+        message: 'Servicio encontrada!',
+      };
+    case SUCCESS.SERVICE_CREATED:
+      return { code: 30, message: 'Servicio creado exitosamente!' };
+    case SUCCESS.SERVICE_UPDATED:
+      return {
+        code: 31,
+        message: 'Información del Servicio actualizada exitosamente!',
+      };
+    case SUCCESS.SERVICE_DELETED:
+      return { code: 32, message: 'Servicio eliminado exitosamente!' };
+    case SUCCESS.LICENSE_CREATED:
+      return { code: 33, message: 'Licencia creado exitosamente!' };
+    case SUCCESS.LICENSE_UPDATED:
+      return {
+        code: 34,
+        message: 'Información de la licencia actualizada exitosamente!',
+      };
+      case SUCCESS.LICENSE_DELETED:
+      return { code: 35, message: 'Licencia eliminada exitosamente!' };
   }
 }

@@ -8,7 +8,6 @@ import { Roles } from 'src/entities/enum/role.enum';
 import { UserRepository } from 'src/repositories';
 import { CarRepository } from 'src/repositories/car.repository';
 import { ApiResponse, ERROR, SUCCESS } from 'src/responses';
-import { UserService } from './user.service';
 
 @Injectable()
 export class CarService {
@@ -45,10 +44,36 @@ export class CarService {
         return new ApiResponse(false, ERROR.PLATE_NOT_VALID);
 
       let car = await this.carRepository.findOne({
-        where: { plate: dto.plate },
+        where: {
+          plate: dto.plate,
+        },
+      });
+      let carVin = await this.carRepository.findOne({
+        where: {
+          noVin: dto.noVin,
+        },
+      });
+      let carSerie = await this.carRepository.findOne({
+        where: {
+          noSerie: dto.noSerie,
+        },
+      });
+      let carMotor = await this.carRepository.findOne({
+        where: {
+          noMotor: dto.noMotor,
+        },
+      });
+      let carChasis = await this.carRepository.findOne({
+        where: {
+          noChasis: dto.noChasis,
+        },
       });
 
       if (car) return new ApiResponse(false, ERROR.CAR_EXIST);
+      if (carVin) return new ApiResponse(false, ERROR.CAR_UNIQUE_VIN);
+      if (carSerie) return new ApiResponse(false, ERROR.CAR_UNIQUE_SERIE);
+      if (carMotor) return new ApiResponse(false, ERROR.CAR_UNIQUE_MOTOR);
+      if (carChasis) return new ApiResponse(false, ERROR.CAR_UNIQUE_CHASIS);
 
       const user = await this.userRepository.findOne({
         where: { identification: dto.identificationOwner },
@@ -56,6 +81,7 @@ export class CarService {
       if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
 
       car = await this.carRepository.create(dto);
+
       await car.save();
 
       user.car = <any>car.id;
@@ -69,7 +95,7 @@ export class CarService {
 
   async update(plate: string, dto: UpdateCarDto): Promise<ApiResponse> {
     if (!this.validatePlate(plate))
-        return new ApiResponse(false, ERROR.PLATE_NOT_VALID);
+      return new ApiResponse(false, ERROR.PLATE_NOT_VALID);
 
     const car = await this.carRepository.findOne({
       where: { plate: plate },
