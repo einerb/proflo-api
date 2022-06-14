@@ -194,7 +194,6 @@ export class UpdateCarDto {
     description: 'Blindaje del vehiculo',
   })
   @IsBoolean()
-  @IsEmpty()
   isShielding: boolean;
 
   @ApiProperty({
