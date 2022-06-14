@@ -20,6 +20,9 @@ export class ServiceEntity extends BaseEntity {
   @Column({ type: 'text', nullable: false })
   hash: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  title: string;
+
   @Column({ type: 'text', nullable: false })
   description: string;
 

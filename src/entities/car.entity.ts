@@ -36,7 +36,7 @@ export class CarEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 4, nullable: false })
   model: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: false })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   countryOrigin: string;
 
   @Column({ type: 'varchar', length: 22, nullable: false })
