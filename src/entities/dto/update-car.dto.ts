@@ -65,8 +65,7 @@ export class UpdateCarDto {
   @ApiProperty({
     description: 'Pais de origen del vehiculo',
   })
-  @IsNotEmpty()
-  @IsNotBlank({ message: 'El campo <<countryOrigin>> no puede estar vacío!' })
+  @IsEmpty()
   countryOrigin: string;
 
   @ApiProperty({
@@ -195,12 +194,13 @@ export class UpdateCarDto {
     description: 'Blindaje del vehiculo',
   })
   @IsBoolean()
-  @IsNotEmpty()
+  @IsEmpty()
   isShielding: boolean;
 
   @ApiProperty({
     description: 'Nivel del blindado',
   })
+  @IsEmpty()
   levelShielding: string;
 
   @ApiProperty({

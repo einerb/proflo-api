@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsEmpty, IsNotEmpty, IsNumber } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsEmpty,
+  IsNotEmpty,
+  IsNumber,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 import { IsNotBlank } from 'src/decorators/is-not-blank.decorator';
@@ -41,14 +47,16 @@ export class CreateCarDto {
   enrollmentDate: Date;
 
   @ApiProperty({
-    description: 'Tipo de vehiculo como AUTOMOVIL, MOTOCARRO, CAMPERO, CAMIONETA, BUS, CAMION, etc.',
+    description:
+      'Tipo de vehiculo como AUTOMOVIL, MOTOCARRO, CAMPERO, CAMIONETA, BUS, CAMION, etc.',
   })
   @IsNotEmpty()
   @IsNotBlank({ message: 'El campo <<typeVehicle>> no puede estar vacío!' })
   typeVehicle: string;
 
   @ApiProperty({
-    description: 'Tipo de servicio que presta el vehiculo como PARTICULAR O PUBLICO',
+    description:
+      'Tipo de servicio que presta el vehiculo como PARTICULAR O PUBLICO',
   })
   @IsNotEmpty()
   @IsNotBlank({ message: 'El campo <<typeService>> no puede estar vacío!' })
@@ -64,8 +72,7 @@ export class CreateCarDto {
   @ApiProperty({
     description: 'Pais de origen del vehiculo',
   })
-  @IsNotEmpty()
-  @IsNotBlank({ message: 'El campo <<countryOrigin>> no puede estar vacío!' })
+  @IsEmpty()
   countryOrigin: string;
 
   @ApiProperty({
@@ -194,19 +201,20 @@ export class CreateCarDto {
     description: 'Blindaje del vehiculo',
   })
   @IsBoolean()
-  @IsNotEmpty()
+  @IsEmpty()
   isShielding: boolean;
 
   @ApiProperty({
     description: 'Nivel del blindado',
   })
+  @IsEmpty()
   levelShielding: string;
 
   @ApiProperty({
     description: 'Fecha del blindaje',
   })
-  @IsEmpty()
   @Type(() => Date)
+  @IsEmpty()
   dateShielding: Date;
 
   @ApiProperty({
