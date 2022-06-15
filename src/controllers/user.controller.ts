@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
   UsePipes,
@@ -15,6 +16,8 @@ import {
 
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto, UpdateUserDto } from 'src/entities/dto/index';
+import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
+import { ApiResponse } from 'src/responses';
 import { AuthService, UserService } from 'src/services/';
 
 @Controller('user')
@@ -34,6 +37,19 @@ export class UserController {
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
     return await this.userService.findById(tokenDecode.role, identification);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  async getAll(
+    @Req() request,
+    @Query() pagination: IPaginationWithDates,
+    @Param('role') role: string,
+  ): Promise<ApiResponse> {
+    const rawToken = request.headers['authorization'].split(' ')[1];
+    const tokenDecode = this.authService.decodingJWT(rawToken);
+
+    return await this.userService.getAll(tokenDecode.role, role, pagination);
   }
 
   @UseGuards(AuthGuard('jwt'))

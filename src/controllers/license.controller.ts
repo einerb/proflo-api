@@ -24,7 +24,7 @@ export class LicenseController {
     private readonly authService: AuthService,
   ) {}
 
-  /* @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
   @Post(':id')
   async create(
@@ -36,7 +36,7 @@ export class LicenseController {
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
     return await this.licenseService.create(tokenDecode.role, id, dto);
-  } */
+  }
 
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))

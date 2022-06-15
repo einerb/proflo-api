@@ -29,19 +29,19 @@ export class LicenseService {
       if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
 
       const licenseExist = await this.licenseRepository
-      .createQueryBuilder('license')
-      .where('license.users = :id', {
-        users: id,
-      })
-      .getOne();
-      console.log(licenseExist);
+        .createQueryBuilder('license')
+        .where('license.usersId = :id AND license.category = :category', {
+          id: id,
+          category: dto.category,
+        })
+        .getMany();
 
-      /* if (licenseExist?.users.id)
-        return new ApiResponse(false, ERROR.LICENSE_EXIST); */
+      if (licenseExist.length > 0)
+        return new ApiResponse(false, ERROR.LICENSE_EXIST);
 
       const license = await this.licenseRepository.create(dto);
       license.users = <any>user.id;
-      //await license.save();
+      await license.save();
 
       return new ApiResponse(true, SUCCESS.LICENSE_CREATED, license);
     } else {

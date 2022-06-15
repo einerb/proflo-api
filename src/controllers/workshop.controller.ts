@@ -57,6 +57,19 @@ export class WorkshopController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get(':nit/:role')
+  async getByIdRole(
+    @Param('nit') nit: string,
+    @Param('role') role: string,
+    @Req() request,
+  ) {
+    const rawToken = request.headers['authorization'].split(' ')[1];
+    const tokenDecode = this.authService.decodingJWT(rawToken);
+
+    return await this.workshopService.findByIdRole(tokenDecode, nit, role);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post()
   async create(@Body() dto: CreateWorkshopDto, @Req() request) {

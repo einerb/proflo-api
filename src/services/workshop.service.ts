@@ -94,6 +94,49 @@ export class WorkshopService {
     }
   }
 
+  async findByIdRole(
+    userDecode: any,
+    nit: string,
+    role: string,
+  ): Promise<ApiResponse> {
+    if (userDecode.role.role === Roles.ROOT) {
+      const workshop = await this.workshopRepository
+        .createQueryBuilder('workshop')
+        .leftJoinAndSelect('workshop.users', 'user')
+        .loadRelationCountAndMap('workshop.limit', 'workshop.users')
+        .where('workshop.nit = :nit AND workshop.state = true', {
+          nit: nit,
+        })
+        .getOne();
+
+      if (!workshop) return new ApiResponse(false, ERROR.WORKSHOP_NOT_FOUND);
+
+      return new ApiResponse(true, SUCCESS.WORKSHOP_FOUND, workshop);
+    }
+    if (
+      userDecode.role.role === Roles.ADMIN ||
+      userDecode.role.role === Roles.USER
+    ) {
+      const workshopOther = await this.workshopRepository
+        .createQueryBuilder('workshop')
+        .leftJoinAndSelect('workshop.users', 'user')
+        .loadRelationCountAndMap('workshop.limit', 'workshop.users')
+        .where(
+          'workshop.nit = :nit AND workshop.state = true AND user.role = :role',
+          {
+            nit: nit,
+            role: role,
+          },
+        )
+        .getOne();
+
+      if (!workshopOther)
+        return new ApiResponse(false, ERROR.WORKSHOP_NOT_FOUND);
+
+      return new ApiResponse(true, SUCCESS.WORKSHOP_FOUND, workshopOther);
+    }
+  }
+
   async create(userDecode: any, dto: CreateWorkshopDto): Promise<ApiResponse> {
     if (userDecode.role === Roles.ROOT) {
       if (

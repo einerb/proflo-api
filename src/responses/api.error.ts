@@ -30,6 +30,7 @@ export enum ERROR {
   CAR_UNIQUE_CHASIS,
   LICENSE_NOT_FOUND,
   LICENSE_EXIST,
+  USER_FOUND,
 }
 
 export interface Error {
@@ -173,7 +174,13 @@ export function GET_ERROR(error): Error {
     case ERROR.LICENSE_EXIST:
       return {
         code: 36,
-        error: 'La categoria de la licencia ya se encuentra registrado!',
+        error:
+          'La categoría de la licencia ya se encuentra registrada para este usuario!',
+      };
+    case ERROR.USER_FOUND:
+      return {
+        code: 37,
+        error: 'No hay usuarios!',
       };
   }
 }

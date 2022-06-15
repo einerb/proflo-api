@@ -3,9 +3,15 @@ import { Injectable } from '@nestjs/common';
 
 import { ApiResponse, SUCCESS, ERROR } from '../responses';
 import { CreateUserDto, UpdateUserDto } from 'src/entities/dto/index';
-import { WorkshopEntity, UserEntity } from 'src/entities/index';
+import {
+  WorkshopEntity,
+  UserEntity,
+  PaginationVerifier,
+} from 'src/entities/index';
 import { UserRepository, WorkshopRepository } from '../repositories/index';
 import { Roles } from 'src/entities/enum/role.enum';
+import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
+import { ApiResponseRecords } from 'src/responses/api.response';
 
 @Injectable()
 export class UserService {
