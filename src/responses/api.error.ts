@@ -31,6 +31,9 @@ export enum ERROR {
   LICENSE_NOT_FOUND,
   LICENSE_EXIST,
   USER_FOUND,
+  SERVICES_NOT_FOUND,
+  NEW_NOT_FOUND,
+  NEW_EXIST,
 }
 
 export interface Error {
@@ -58,7 +61,7 @@ export function GET_ERROR(error): Error {
       return { code: 6, error: 'El taller ya existe!' };
     case ERROR.WORKSHOP_NOT_FOUND:
       return { code: 7, error: 'Taller no existe!' };
-    case ERROR.WORKSHOP_NOT_FOUND:
+    case ERROR.WORKSHOPS_NOT_FOUND:
       return { code: 8, error: 'No hay talleres!' };
     case ERROR.WORKSHOP_ADMIN_LIMIT:
       return {
@@ -74,113 +77,129 @@ export function GET_ERROR(error): Error {
       };
     case ERROR.IDENTIFICATION_LENGTH:
       return {
-        code: 12,
+        code: 11,
         error:
           'La longitud del número de identificación debe ser mayor que 6 y menor que 13!',
       };
     case ERROR.USER_UNAUTHORIZED:
       return {
-        code: 14,
+        code: 12,
         error: 'Las credenciales de accesos son incorrectas!',
       };
     case ERROR.SEARCH_EMPTY:
       return {
-        code: 16,
+        code: 13,
         error: 'No se encontraron coincidencias!',
       };
     case ERROR.NOTIFICATION_NOT_FOUND:
       return {
-        code: 19,
+        code: 14,
         error: 'Notificación no encontrado!',
       };
     case ERROR.FILE_WAS_NOT_UPLOADED:
       return {
-        code: 20,
+        code: 15,
         error: 'El archivo no fue cargado con éxito!',
       };
     case ERROR.FILE_WAS_NOT_REMOVED:
       return {
-        code: 21,
+        code: 16,
         error: 'El archivo no fue eliminado con éxito!',
       };
     case ERROR.PAGINATION_WAS_NOT_PROVIDED:
       return {
-        code: 22,
+        code: 17,
         error:
           'La paginación no fue proporcionada, verifique los parámetros de consulta dentro de la prop de datos.',
       };
     case ERROR.REQUEST_UNAUTHORIZED:
       return {
-        code: 23,
+        code: 18,
         error: 'Usuario NO PERMITIDO para realizar ésta operación!',
       };
     case ERROR.CAR_NOT_FOUND:
       return {
-        code: 24,
+        code: 19,
         error: 'Vehículo no encontrado!',
       };
     case ERROR.CAR_EXIST:
-      return { code: 25, error: 'Vehículo ya existe!' };
+      return { code: 20, error: 'Vehículo ya existe!' };
     case ERROR.PLATE_NOT_VALID:
-      return { code: 26, error: 'La placa del Vehículo no es válida!' };
+      return { code: 21, error: 'La placa del Vehículo no es válida!' };
     case ERROR.SERVICE_NOT_FOUND:
       return {
-        code: 27,
+        code: 22,
         error: 'Servicio no encontrado!',
       };
     case ERROR.STATES_NOT_FOUND:
       return {
-        code: 28,
+        code: 23,
         error:
           'El estado no existe. Estados permitidos: CREATED, ACTIVE O COMPLETED!',
       };
     case ERROR.SERVICE_ACTIVE:
       return {
-        code: 29,
+        code: 24,
         error:
           'Tiene un servicio activo. Debe completar el que se encuentra activo antes de continuar!',
       };
     case ERROR.HAS_CAR:
       return {
-        code: 30,
+        code: 25,
         error:
           'Para crear el servicio, el usuario debe tener un Vehículo asociado!',
       };
     case ERROR.CAR_UNIQUE_CHASIS:
       return {
-        code: 31,
+        code: 26,
         error: 'El número de chasis ya se encuentra registrado!',
       };
     case ERROR.CAR_UNIQUE_SERIE:
       return {
-        code: 32,
+        code: 27,
         error: 'El número de serie ya se encuentra registrado!',
       };
     case ERROR.CAR_UNIQUE_MOTOR:
       return {
-        code: 33,
+        code: 28,
         error: 'El número de motor ya se encuentra registrado!',
       };
     case ERROR.CAR_UNIQUE_VIN:
       return {
-        code: 34,
+        code: 29,
         error: 'El número VIN ya se encuentra registrado!',
       };
     case ERROR.LICENSE_NOT_FOUND:
       return {
-        code: 35,
-        error: 'Licencia  no encontrada!',
+        code: 30,
+        error: 'Licencia no encontrada!',
       };
     case ERROR.LICENSE_EXIST:
       return {
-        code: 36,
+        code: 31,
         error:
           'La categoría de la licencia ya se encuentra registrada para este usuario!',
       };
     case ERROR.USER_FOUND:
       return {
-        code: 37,
+        code: 32,
         error: 'No hay usuarios!',
+      };
+    case ERROR.SERVICES_NOT_FOUND:
+      return {
+        code: 33,
+        error: 'No hay servicios!',
+      };
+    case ERROR.NEW_NOT_FOUND:
+      return {
+        code: 34,
+        error: 'Novedad no encontrada!',
+      };
+    case ERROR.NEW_EXIST:
+      return {
+        code: 35,
+        error:
+          'El nombre de la novedad ya se encuentra registrado. Por favor use otro nombre!',
       };
   }
 }

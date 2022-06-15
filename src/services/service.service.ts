@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ServiceEntity, UserEntity, WorkshopEntity } from 'src/entities';
+import { PaginationVerifier, ServiceEntity, UserEntity } from 'src/entities';
 import { CreateServiceDto } from 'src/entities/dto/create-service.dto';
 import { Roles } from 'src/entities/enum/role.enum';
 import { States } from 'src/entities/enum/state.enum';
 import { UserRepository } from 'src/repositories';
 import { ServiceRepository } from 'src/repositories/service.repository';
 import { ApiResponse, ERROR, SUCCESS } from 'src/responses';
-import { UpdateServiceDto } from 'src/entities/dto/update-service.dto';
-import { BeforeInsert } from 'typeorm';
+import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
+import { ApiResponseRecords } from 'src/responses/api.response';
 
 @Injectable()
 export class ServiceService {
@@ -21,21 +21,54 @@ export class ServiceService {
     private userRepository: UserRepository,
   ) {}
 
-  async findById(id: number, idUser: number): Promise<ApiResponse> {
+  async findById(id: number): Promise<ApiResponse> {
     const service = await this.serviceRepository
       .createQueryBuilder('service')
       .leftJoinAndSelect('service.users', 'user')
-      /*.leftJoinAndSelect('user.workshopsId', 'workshop')
-       .leftJoinAndSelect('workshop.', 'workshops_users') */
-      .where('service.id = :id AND user = :idUser', {
+      .leftJoinAndSelect('service.news', 'new')
+      .where('service.id = :id', {
         id: id,
-        users: idUser,
       })
       .getOne();
 
     if (!service) return new ApiResponse(false, ERROR.SERVICE_NOT_FOUND);
 
     return new ApiResponse(true, SUCCESS.SERVICE_FOUND, service);
+  }
+
+  async getAll(
+    userDecode: any,
+    pagination: IPaginationWithDates,
+  ): Promise<ApiResponse> {
+    if (userDecode.role === Roles.ROOT) {
+      if (!PaginationVerifier.verifyIPagination(pagination))
+        return ApiResponse.paginationWithDatesNotProvidedError();
+
+      const result = await this.serviceRepository
+        .createQueryBuilder('service')
+        .leftJoinAndSelect('service.users', 'user')
+        .leftJoinAndSelect('service.news', 'new')
+        .where('service.created_at >= :start AND service.created_at <= :end', {
+          start: pagination.start,
+          end: pagination.end,
+        })
+        .skip(
+          Math.max(0, (pagination.pageNumber - 1) * pagination.pageElements),
+        )
+        .take(pagination.pageElements)
+        .orderBy('service.createdAt', 'DESC')
+        .getManyAndCount();
+
+      if (!result.length) new ApiResponse(false, ERROR.SERVICES_NOT_FOUND);
+
+      return new ApiResponse(
+        true,
+        SUCCESS.SERVICES_FOUND,
+        new ApiResponseRecords(result, pagination),
+      );
+    } else {
+      return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
+    }
   }
 
   async validateStateService(user: number, state: any) {
@@ -85,7 +118,7 @@ export class ServiceService {
   async update(
     userDecode: any,
     id: number,
-    dto: UpdateServiceDto,
+    dto: CreateServiceDto,
   ): Promise<ApiResponse> {
     if (userDecode.role !== Roles.USER) {
       const service = await this.serviceRepository.findOne({
@@ -97,6 +130,27 @@ export class ServiceService {
       let serviceUpdated = await this.serviceRepository.update({ id: id }, dto);
 
       return new ApiResponse(true, SUCCESS.SERVICE_UPDATED, serviceUpdated);
+    } else {
+      return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
+    }
+  }
+
+  async completed(userDecode: any, id: number): Promise<ApiResponse> {
+    if (userDecode.role !== Roles.USER) {
+      const service = await this.serviceRepository.findOne({
+        where: { id: id },
+      });
+
+      if (!service) return new ApiResponse(false, ERROR.SERVICE_NOT_FOUND);
+      if (service.state === States.COMPLETED)
+        return new ApiResponse(true, SUCCESS.SERVICE_COMPLETED_EXIST);
+
+      await this.serviceRepository.update(
+        { id: id },
+        { state: States.COMPLETED },
+      );
+
+      return new ApiResponse(true, SUCCESS.SERVICE_COMPLETED);
     } else {
       return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
     }

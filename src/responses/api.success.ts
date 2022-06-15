@@ -22,11 +22,18 @@ export enum SUCCESS {
   CAR_DELETED,
   SERVICE_FOUND,
   SERVICE_CREATED,
+  SERVICES_FOUND,
   SERVICE_UPDATED,
   SERVICE_DELETED,
   LICENSE_CREATED,
   LICENSE_UPDATED,
   LICENSE_DELETED,
+  NEW_FOUND,
+  NEW_CREATED,
+  SERVICE_COMPLETED,
+  SERVICE_COMPLETED_EXIST,
+  NEW_UPDATED,
+  NEW_DELETED,
 }
 
 export interface Success {
@@ -64,75 +71,95 @@ export function GET_SUCCESS(success): Success {
       return { code: 10, message: 'Taller eliminado exitosamente!' };
     case SUCCESS.USER_VALIDATE:
       return {
-        code: 14,
+        code: 11,
         message: 'El usuario ha sido validado!',
       };
     case SUCCESS.USER_LOGIN:
       return {
-        code: 15,
+        code: 12,
         message: 'El usuario ha iniciado sesión exitosamente!',
       };
     case SUCCESS.PASSWORD_UPDATED:
       return {
-        code: 17,
+        code: 13,
         message: 'Contraseña de usuario actualizada exitosamente!',
       };
     case SUCCESS.REPORT:
       return {
-        code: 18,
+        code: 14,
         message: 'Reporte encontrado!',
       };
     case SUCCESS.SEARCH:
       return {
-        code: 19,
+        code: 15,
         message: 'Resultados encontrados!',
       };
     case SUCCESS.NOTIFICATION_CREATED:
       return {
-        code: 23,
+        code: 16,
         message: 'Se ha generado una notificación de encontrado!',
       };
     case SUCCESS.NOTIFICATIONS_FOUND:
       return {
-        code: 24,
+        code: 17,
         message: 'Notificaciones encontradas!',
       };
     case SUCCESS.CAR_FOUND:
       return {
-        code: 25,
+        code: 18,
         message: 'Vehículo encontrada!',
       };
     case SUCCESS.CAR_CREATED:
-      return { code: 26, message: 'Vehículo creado exitosamente!' };
+      return { code: 19, message: 'Vehículo creado exitosamente!' };
     case SUCCESS.CAR_UPDATED:
       return {
-        code: 27,
+        code: 20,
         message: 'Información del Vehículo actualizada exitosamente!',
       };
     case SUCCESS.CAR_DELETED:
-      return { code: 28, message: 'Vehículo eliminado exitosamente!' };
+      return { code: 21, message: 'Vehículo eliminado exitosamente!' };
     case SUCCESS.SERVICE_FOUND:
       return {
-        code: 29,
+        code: 22,
         message: 'Servicio encontrada!',
       };
     case SUCCESS.SERVICE_CREATED:
-      return { code: 30, message: 'Servicio creado exitosamente!' };
+      return { code: 23, message: 'Servicio creado exitosamente!' };
     case SUCCESS.SERVICE_UPDATED:
       return {
-        code: 31,
+        code: 24,
         message: 'Información del Servicio actualizada exitosamente!',
       };
     case SUCCESS.SERVICE_DELETED:
-      return { code: 32, message: 'Servicio eliminado exitosamente!' };
+      return { code: 25, message: 'Servicio eliminado exitosamente!' };
     case SUCCESS.LICENSE_CREATED:
-      return { code: 33, message: 'Licencia creado exitosamente!' };
+      return { code: 26, message: 'Licencia creado exitosamente!' };
     case SUCCESS.LICENSE_UPDATED:
       return {
-        code: 34,
+        code: 27,
         message: 'Información de la licencia actualizada exitosamente!',
       };
-      case SUCCESS.LICENSE_DELETED:
-      return { code: 35, message: 'Licencia eliminada exitosamente!' };
+    case SUCCESS.LICENSE_DELETED:
+      return { code: 28, message: 'Licencia eliminada exitosamente!' };
+    case SUCCESS.SERVICES_FOUND:
+      return { code: 29, message: 'Servicios encontrados!' };
+    case SUCCESS.NEW_FOUND:
+      return {
+        code: 30,
+        message: 'Novedad encontrada!',
+      };
+    case SUCCESS.NEW_CREATED:
+      return { code: 31, message: 'Novedad generada exitosamente!' };
+    case SUCCESS.SERVICE_COMPLETED:
+      return { code: 32, message: 'El servicio se completó con éxito!' };
+    case SUCCESS.SERVICE_COMPLETED_EXIST:
+      return { code: 33, message: 'El servicio ya se encuentra completado!' };
+    case SUCCESS.NEW_UPDATED:
+      return {
+        code: 34,
+        message: 'Información de la novedad fue actualizada exitosamente!',
+      };
+    case SUCCESS.NEW_DELETED:
+      return { code: 35, message: 'Novedad eliminada exitosamente!' };
   }
 }

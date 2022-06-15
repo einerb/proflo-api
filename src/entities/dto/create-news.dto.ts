@@ -3,16 +3,16 @@ import { IsNotEmpty } from 'class-validator';
 
 import { IsNotBlank } from 'src/decorators/is-not-blank.decorator';
 
-export class CreateServiceDto {
+export class CreateNewsDto {
   @ApiProperty({
-    description: 'Titulo del servicio',
+    description: 'Nombre de la novedad',
   })
   @IsNotEmpty()
-  @IsNotBlank({ message: 'El campo <<title>> no puede estar vacío!' })
-  title: string;
+  @IsNotBlank({ message: 'El campo <<name>> no puede estar vacío!' })
+  name: string;
 
   @ApiProperty({
-    description: 'Breve descripcion del servicio',
+    description: 'Descripcion de la novedad',
   })
   @IsNotEmpty()
   @IsNotBlank({ message: 'El campo <<description>> no puede estar vacío!' })
