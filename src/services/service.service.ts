@@ -11,6 +11,7 @@ import { ServiceRepository } from 'src/repositories/service.repository';
 import { ApiResponse, ERROR, SUCCESS } from 'src/responses';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
 import { ApiResponseRecords } from 'src/responses/api.response';
+import { CompletedServiceDto } from 'src/entities/dto/completed-service.dto';
 
 @Injectable()
 export class ServiceService {
@@ -138,7 +139,7 @@ export class ServiceService {
   async completed(
     userDecode: any,
     id: number,
-    total: number,
+    dto: CompletedServiceDto,
   ): Promise<ApiResponse> {
     if (userDecode.role !== Roles.USER) {
       const service = await this.serviceRepository.findOne({
@@ -151,7 +152,7 @@ export class ServiceService {
 
       await this.serviceRepository.update(
         { id: id },
-        { state: States.COMPLETED, total: total },
+        { state: States.COMPLETED, total: dto.total },
       );
 
       return new ApiResponse(true, SUCCESS.SERVICE_COMPLETED);

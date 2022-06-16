@@ -14,6 +14,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { CompletedServiceDto } from 'src/entities/dto/completed-service.dto';
 
 import { CreateServiceDto } from 'src/entities/dto/create-service.dto';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
@@ -78,13 +79,13 @@ export class ServiceController {
   @Put(':id/completed')
   async updateCompleted(
     @Param('id', ParseIntPipe) id: number,
-    @Body() total: number,
+    @Body() dto: CompletedServiceDto,
     @Req() request,
   ) {
     const rawToken = request.headers['authorization'].split(' ')[1];
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
-    return await this.serviceService.completed(tokenDecode.role, id, total);
+    return await this.serviceService.completed(tokenDecode.role, id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
