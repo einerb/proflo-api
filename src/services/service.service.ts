@@ -11,7 +11,6 @@ import { ServiceRepository } from 'src/repositories/service.repository';
 import { ApiResponse, ERROR, SUCCESS } from 'src/responses';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
 import { ApiResponseRecords } from 'src/responses/api.response';
-import { CompletedServiceDto } from 'src/entities/dto/completed-service.dto';
 
 @Injectable()
 export class ServiceService {
@@ -136,15 +135,15 @@ export class ServiceService {
     }
   }
 
-  async completed(
-    userDecode: any,
-    id: number,
-    dto: CompletedServiceDto,
-  ): Promise<ApiResponse> {
+  async completed(userDecode: any, id: number): Promise<ApiResponse> {
     if (userDecode.role !== Roles.USER) {
       const service = await this.serviceRepository.findOne({
+        relations: ['news'],
         where: { id: id },
       });
+
+      let total = 0.0;
+      service.news.forEach((element) => (total += element.price));
 
       if (!service) return new ApiResponse(false, ERROR.SERVICE_NOT_FOUND);
       if (service.state === States.COMPLETED)
@@ -152,10 +151,14 @@ export class ServiceService {
 
       await this.serviceRepository.update(
         { id: id },
-        { state: States.COMPLETED, total: dto.total },
+        { state: States.COMPLETED, total: total },
       );
 
-      return new ApiResponse(true, SUCCESS.SERVICE_COMPLETED);
+      return new ApiResponse(
+        true,
+        SUCCESS.SERVICE_COMPLETED,
+        `Total final del servicio #${service.hash}: $ ${total}`,
+      );
     } else {
       return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
     }
