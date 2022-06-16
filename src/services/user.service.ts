@@ -164,6 +164,7 @@ export class UserService {
       if (userLimit[0]?.limit >= workshop.limit_users) {
         return new ApiResponse(false, ERROR.WORKSHOP_ADMIN_LIMIT);
       } else {
+        
         let user = await this.userRepository.create(dto);
         user.role = <any>role;
         user = await this.userRepository.save(user);

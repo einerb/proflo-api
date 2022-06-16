@@ -25,7 +25,7 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int', nullable: false, unique: true })
+  @Column({ type: 'int', nullable: false })
   identification: number;
 
   @Column({ type: 'varchar', length: 45, nullable: false })
