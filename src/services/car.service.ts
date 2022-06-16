@@ -116,14 +116,7 @@ export class CarService {
 
       if (!car) return new ApiResponse(false, ERROR.CAR_NOT_FOUND);
 
-      this.carRepository
-        .createQueryBuilder()
-        .delete()
-        .from(CarEntity)
-        .where('id = :id', {
-          id: id,
-        })
-        .execute();
+      await this.carRepository.softDelete({ id: id });
 
       return new ApiResponse(true, SUCCESS.CAR_DELETED);
     } else {

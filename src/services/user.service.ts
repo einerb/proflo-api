@@ -68,6 +68,7 @@ export class UserService {
       .leftJoinAndSelect('user.car', 'car')
       .leftJoinAndSelect('user.licenses', 'licenses')
       .leftJoinAndSelect('user.services', 'services')
+      .leftJoinAndSelect('services.news', 'news')
       .where(
         'user.identification = :identification AND user.state = true AND user.role_id >= :role',
         {
@@ -205,14 +206,7 @@ export class UserService {
 
       if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
 
-      this.userRepository
-        .createQueryBuilder()
-        .delete()
-        .from(UserEntity)
-        .where('id = :id', {
-          id: id,
-        })
-        .execute();
+      this.userRepository.softDelete({ id: id });
 
       return new ApiResponse(true, SUCCESS.USER_DELETED);
     } else {

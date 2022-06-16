@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 import { IsNotBlank } from 'src/decorators/is-not-blank.decorator';
 
@@ -17,4 +18,12 @@ export class CreateNewsDto {
   @IsNotEmpty()
   @IsNotBlank({ message: 'El campo <<description>> no puede estar vacío!' })
   description: string;
+
+  @ApiProperty({
+    description: 'Precio por cada novedad del servicio',
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  @Type(() => Number)
+  price: number;
 }

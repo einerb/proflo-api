@@ -135,7 +135,11 @@ export class ServiceService {
     }
   }
 
-  async completed(userDecode: any, id: number): Promise<ApiResponse> {
+  async completed(
+    userDecode: any,
+    id: number,
+    total: number,
+  ): Promise<ApiResponse> {
     if (userDecode.role !== Roles.USER) {
       const service = await this.serviceRepository.findOne({
         where: { id: id },
@@ -147,7 +151,7 @@ export class ServiceService {
 
       await this.serviceRepository.update(
         { id: id },
-        { state: States.COMPLETED },
+        { state: States.COMPLETED, total: total },
       );
 
       return new ApiResponse(true, SUCCESS.SERVICE_COMPLETED);

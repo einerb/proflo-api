@@ -76,11 +76,15 @@ export class ServiceController {
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
   @Put(':id/completed')
-  async updateCompleted(@Param('id', ParseIntPipe) id: number, @Req() request) {
+  async updateCompleted(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() total: number,
+    @Req() request,
+  ) {
     const rawToken = request.headers['authorization'].split(' ')[1];
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
-    return await this.serviceService.completed(tokenDecode.role, id);
+    return await this.serviceService.completed(tokenDecode.role, id, total);
   }
 
   @UseGuards(AuthGuard('jwt'))

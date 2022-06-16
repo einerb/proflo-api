@@ -26,6 +26,9 @@ export class ServiceEntity extends BaseEntity {
   @Column({ type: 'text', nullable: false })
   description: string;
 
+  @Column({ type: 'float', nullable: false, default: 0.0 })
+  total: number;
+
   @Column({ type: 'enum', enum: States, default: States.CREATED })
   state: States;
 

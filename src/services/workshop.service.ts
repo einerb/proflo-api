@@ -29,6 +29,8 @@ export class WorkshopService {
       const result = await this.workshopRepository
         .createQueryBuilder('workshop')
         .leftJoinAndSelect('workshop.users', 'user')
+        .leftJoinAndSelect('user.licenses', 'licenses')
+        .leftJoinAndSelect('user.car', 'car')
         .where(
           'workshop.created_at >= :start AND workshop.created_at <= :end AND workshop.state = true',
           {
@@ -210,14 +212,7 @@ export class WorkshopService {
       if (workshop.limit > 0) {
         return new ApiResponse(false, ERROR.WORKSHOP_USERS_COUNT);
       } else {
-        this.workshopRepository
-          .createQueryBuilder()
-          .delete()
-          .from(WorkshopEntity)
-          .where('id = :id', {
-            id: id,
-          })
-          .execute();
+        this.workshopRepository.softDelete({ id: id });
 
         return new ApiResponse(true, SUCCESS.WORKSHOP_DELETED);
       }

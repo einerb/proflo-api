@@ -20,6 +20,9 @@ export class NewEntity extends BaseEntity {
   @Column({ type: 'text', nullable: false })
   description: string;
 
+  @Column({ type: 'float', nullable: false, default: 0.0 })
+  price: number;
+
   @ManyToOne(() => ServiceEntity, (service) => service.news)
   services: ServiceEntity;
 

@@ -63,14 +63,7 @@ export class NewService {
 
     if (!news) return new ApiResponse(false, ERROR.NEW_NOT_FOUND);
 
-    this.newRepository
-      .createQueryBuilder()
-      .delete()
-      .from(NewEntity)
-      .where('id = :id', {
-        id: id,
-      })
-      .execute();
+    this.newRepository.softDelete({ id: id });
 
     return new ApiResponse(true, SUCCESS.NEW_DELETED);
   }
