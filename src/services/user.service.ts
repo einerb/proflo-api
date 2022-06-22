@@ -3,21 +3,14 @@ import { Injectable } from '@nestjs/common';
 
 import { ApiResponse, SUCCESS, ERROR } from '../responses';
 import { CreateUserDto, UpdateUserDto } from 'src/entities/dto/index';
-import {
-  WorkshopEntity,
-  UserEntity,
-  PaginationVerifier,
-} from 'src/entities/index';
+import { WorkshopEntity, UserEntity } from 'src/entities/index';
 import { UserRepository, WorkshopRepository } from '../repositories/index';
 import { Roles } from 'src/entities/enum/role.enum';
-import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
-import { ApiResponseRecords } from 'src/responses/api.response';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity) private userRepository: UserRepository,
-
     @InjectRepository(WorkshopEntity)
     private workshopRepository: WorkshopRepository,
   ) {}
@@ -68,6 +61,7 @@ export class UserService {
       .leftJoinAndSelect('user.car', 'car')
       .leftJoinAndSelect('user.licenses', 'licenses')
       .leftJoinAndSelect('user.services', 'services')
+      .leftJoinAndSelect('user.notifications', 'notifications')
       .leftJoinAndSelect('services.news', 'news')
       .where(
         'user.identification = :identification AND user.state = true AND user.role_id >= :role',
@@ -164,7 +158,6 @@ export class UserService {
       if (userLimit[0]?.limit >= workshop.limit_users) {
         return new ApiResponse(false, ERROR.WORKSHOP_ADMIN_LIMIT);
       } else {
-        
         let user = await this.userRepository.create(dto);
         user.role = <any>role;
         user = await this.userRepository.save(user);

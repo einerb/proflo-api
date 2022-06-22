@@ -2,13 +2,26 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { NewController } from 'src/controllers/new.controller';
-import { NewEntity, ServiceEntity } from 'src/entities';
+import {
+  NewEntity,
+  NotificationEntity,
+  ServiceEntity,
+  UserEntity,
+} from 'src/entities';
+import { NotificationService } from 'src/services';
 import { NewService } from 'src/services/new.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([NewEntity, ServiceEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      NewEntity,
+      ServiceEntity,
+      UserEntity,
+      NotificationEntity,
+    ]),
+  ],
   controllers: [NewController],
-  providers: [NewService],
+  providers: [NewService, NotificationService],
   exports: [NewService],
 })
 export class NewModule {}

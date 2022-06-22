@@ -11,6 +11,7 @@ import { ServiceRepository } from 'src/repositories/service.repository';
 import { ApiResponse, ERROR, SUCCESS } from 'src/responses';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
 import { ApiResponseRecords } from 'src/responses/api.response';
+import { NotificationService } from './notification.service';
 
 @Injectable()
 export class ServiceService {
@@ -19,6 +20,7 @@ export class ServiceService {
     private serviceRepository: ServiceRepository,
     @InjectRepository(UserEntity)
     private userRepository: UserRepository,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async findById(id: number): Promise<ApiResponse> {
@@ -108,6 +110,11 @@ export class ServiceService {
       } else {
         await service.save();
 
+        this.notificationService.create(user, {
+          title: 'Nuevo servicio!',
+          description: `Se ha creado un nuevo servicio con ID: ${service.hash}`,
+        });
+
         return new ApiResponse(true, SUCCESS.SERVICE_CREATED, service);
       }
     } else {
@@ -138,7 +145,7 @@ export class ServiceService {
   async completed(userDecode: any, id: number): Promise<ApiResponse> {
     if (userDecode.role !== Roles.USER) {
       const service = await this.serviceRepository.findOne({
-        relations: ['news'],
+        relations: ['news', 'users'],
         where: { id: id },
       });
 
@@ -154,11 +161,12 @@ export class ServiceService {
         { state: States.COMPLETED, total: total },
       );
 
-      return new ApiResponse(
-        true,
-        SUCCESS.SERVICE_COMPLETED,
-        `Total final del servicio #${service.hash}: $ ${total}`,
-      );
+      this.notificationService.create(service.users, {
+        title: 'Servicio completado!',
+        description: `El servicio ID: ${service.hash} se ha completado con éxito.`,
+      });
+
+      return new ApiResponse(true, SUCCESS.SERVICE_COMPLETED, total);
     } else {
       return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
     }

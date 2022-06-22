@@ -5,6 +5,7 @@ export * from './car.service';
 export * from './config.service';
 export * from './database.service';
 export * from './license.service';
+export * from './notification.service';
 export * from './service.service';
 export * from './user.service';
 export * from './workshop.service';

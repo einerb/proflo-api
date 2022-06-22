@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { NewEntity, ServiceEntity } from 'src/entities';
 import { CreateNewsDto } from 'src/entities/dto/create-news.dto';
-import { Roles } from 'src/entities/enum/role.enum';
 import { States } from 'src/entities/enum/state.enum';
 import { NewRepository } from 'src/repositories/new.repository';
 import { ServiceRepository } from 'src/repositories/service.repository';
 import { ApiResponse, ERROR, SUCCESS } from 'src/responses';
+import { NotificationService } from './notification.service';
 
 @Injectable()
 export class NewService {
@@ -15,6 +15,7 @@ export class NewService {
     @InjectRepository(NewEntity) private newRepository: NewRepository,
     @InjectRepository(ServiceEntity)
     private serviceRepository: ServiceRepository,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(id: number, dto: CreateNewsDto): Promise<ApiResponse> {
@@ -26,6 +27,7 @@ export class NewService {
     if (newExist) return new ApiResponse(false, ERROR.NEW_EXIST);
 
     let service = await this.serviceRepository.findOne({
+      relations: ['users'],
       where: {
         id: id,
       },
@@ -40,6 +42,11 @@ export class NewService {
     news.services = <any>service.id;
     await this.newRepository.save(news);
     await this.serviceRepository.save(service);
+
+    this.notificationService.create(service.users, {
+      title: 'Nueva novedad!',
+      description: `Se ha agregado una nueva incidencia al servicio ID: ${service.hash}.`,
+    });
 
     return new ApiResponse(true, SUCCESS.NEW_CREATED, news);
   }

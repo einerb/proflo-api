@@ -14,11 +14,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { CarEntity } from './car.entity';
-import { RoleEntity } from './index';
-import { LicenseEntity } from './license.entity';
-import { ServiceEntity } from './service.entity';
-import { WorkshopEntity } from './workshop.entity';
+import { CarEntity, LicenseEntity, NotificationEntity , RoleEntity, ServiceEntity, WorkshopEntity } from './index';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
@@ -71,6 +67,9 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => LicenseEntity, (license) => license.users)
   licenses: LicenseEntity[];
+
+  @OneToMany(() => NotificationEntity, (notification) => notification.users)
+  notifications: NotificationEntity[];
 
   @ManyToMany(() => WorkshopEntity, (workshop) => workshop.users, {
     cascade: true,
