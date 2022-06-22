@@ -101,8 +101,11 @@ export class WorkshopService {
     nit: string,
     role: string,
   ): Promise<ApiResponse> {
-    if (userDecode.role.role === Roles.ROOT) {
-      const workshop = await this.workshopRepository
+    if (
+      userDecode.role.role === Roles.ADMIN ||
+      userDecode.role.role === Roles.ROOT
+    ) {
+      const workshopFound = await this.workshopRepository
         .createQueryBuilder('workshop')
         .leftJoinAndSelect('workshop.users', 'user')
         .loadRelationCountAndMap('workshop.limit', 'workshop.users')
@@ -110,16 +113,10 @@ export class WorkshopService {
           nit: nit,
         })
         .getOne();
+      if (!workshopFound)
+        return new ApiResponse(false, ERROR.WORKSHOP_NOT_FOUND);
 
-      if (!workshop) return new ApiResponse(false, ERROR.WORKSHOP_NOT_FOUND);
-
-      return new ApiResponse(true, SUCCESS.WORKSHOP_FOUND, workshop);
-    }
-    if (
-      userDecode.role.role === Roles.ADMIN ||
-      userDecode.role.role === Roles.USER
-    ) {
-      const workshopOther = await this.workshopRepository
+      const workshop = await this.workshopRepository
         .createQueryBuilder('workshop')
         .leftJoinAndSelect('workshop.users', 'user')
         .loadRelationCountAndMap('workshop.limit', 'workshop.users')
@@ -132,10 +129,10 @@ export class WorkshopService {
         )
         .getOne();
 
-      if (!workshopOther)
-        return new ApiResponse(false, ERROR.WORKSHOP_NOT_FOUND);
+      if (!workshop)
+        return new ApiResponse(false, ERROR.WORKSHOP_NO_USERS);
 
-      return new ApiResponse(true, SUCCESS.WORKSHOP_FOUND, workshopOther);
+      return new ApiResponse(true, SUCCESS.WORKSHOP_FOUND, workshop);
     }
   }
 

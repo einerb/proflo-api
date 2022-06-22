@@ -34,6 +34,7 @@ export enum ERROR {
   SERVICES_NOT_FOUND,
   NEW_NOT_FOUND,
   NEW_EXIST,
+  WORKSHOP_NO_USERS
 }
 
 export interface Error {
@@ -200,6 +201,12 @@ export function GET_ERROR(error): Error {
         code: 35,
         error:
           'El nombre de la novedad ya se encuentra registrado. Por favor use otro nombre!',
+      };
+      case ERROR.WORKSHOP_NO_USERS:
+      return {
+        code: 36,
+        error:
+          'El taller no tiene usuarios con ese tipo de rol!',
       };
   }
 }
