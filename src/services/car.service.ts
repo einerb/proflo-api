@@ -24,14 +24,14 @@ export class CarService {
       })
       .getOne();
 
+    if (!car) return new ApiResponse(false, ERROR.CAR_NOT_FOUND);
+
     const user = await this.userRepository
       .createQueryBuilder('user')
       .where('user.car = :id', {
         id: car.id,
       })
       .getOne();
-
-    if (!car) return new ApiResponse(false, ERROR.CAR_NOT_FOUND);
 
     return new ApiResponse(true, SUCCESS.CAR_FOUND, { ...car, ...user });
   }
