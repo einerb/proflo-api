@@ -24,8 +24,6 @@ export class CarService {
       })
       .getOne();
 
-    console.log('ID CAR', car.id);
-
     const user = await this.userRepository
       .createQueryBuilder('user')
       .where('user.car = :id', {
