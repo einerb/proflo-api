@@ -14,13 +14,13 @@ export class CarEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 7, nullable: false })
   plate: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   color: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   brand: string;
 
-  @Column({ type: 'varchar', length: 25, nullable: false })
+  @Column({ type: 'varchar', length: 25, nullable: true })
   line: string;
 
   @Column({ type: 'date', nullable: false })
@@ -95,7 +95,7 @@ export class CarEntity extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   levelShielding: string;
 
-  @Column({ type: 'date', nullable: true})
+  @Column({ type: 'date', nullable: true })
   dateShielding: Date;
 
   @Column({ type: 'varchar', length: 7, nullable: false })
