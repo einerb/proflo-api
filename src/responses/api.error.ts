@@ -34,7 +34,8 @@ export enum ERROR {
   SERVICES_NOT_FOUND,
   NEW_NOT_FOUND,
   NEW_EXIST,
-  WORKSHOP_NO_USERS
+  WORKSHOP_NO_USERS,
+  NIT_NO_EXIST,
 }
 
 export interface Error {
@@ -202,11 +203,15 @@ export function GET_ERROR(error): Error {
         error:
           'El nombre de la novedad ya se encuentra registrado. Por favor use otro nombre!',
       };
-      case ERROR.WORKSHOP_NO_USERS:
+    case ERROR.WORKSHOP_NO_USERS:
       return {
         code: 36,
-        error:
-          'El taller no tiene usuarios con ese tipo de rol!',
+        error: 'El taller no tiene usuarios con ese tipo de rol!',
+      };
+    case ERROR.NIT_NO_EXIST:
+      return {
+        code: 37,
+        error: 'Debe enviar el parametro <<nit>> dentro de la data del body. Ejemplo: { "nit": "" }!',
       };
   }
 }

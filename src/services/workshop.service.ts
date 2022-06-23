@@ -64,6 +64,10 @@ export class WorkshopService {
       userDecode.role.role === Roles.USER
     ) {
       let workshop;
+
+      if (dto.nit === undefined)
+        return new ApiResponse(false, ERROR.NIT_NO_EXIST);
+
       if (dto.nit.length > 0) {
         workshop = await this.workshopRepository
           .createQueryBuilder('workshop')
