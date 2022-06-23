@@ -48,12 +48,12 @@ export class WorkshopController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get(':nit')
-  async getById(@Param('nit') nit: string, @Req() request) {
+  @Get('/nit')
+  async getById(@Req() request) {
     const rawToken = request.headers['authorization'].split(' ')[1];
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
-    return await this.workshopService.findById(tokenDecode, nit);
+    return await this.workshopService.findById(tokenDecode);
   }
 
   @UseGuards(AuthGuard('jwt'))
