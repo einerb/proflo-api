@@ -25,7 +25,7 @@ export class CarController {
     private readonly authService: AuthService,
   ) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  /* @UseGuards(AuthGuard('jwt')) */
   @Get(':plate')
   async getById(@Param('plate') plate: string) {
     return await this.carService.findById(plate);
