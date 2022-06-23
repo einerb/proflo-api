@@ -5,7 +5,7 @@ import { WorkshopEntity } from 'src/entities';
 import { WorkshopRepository } from 'src/repositories/wokshop.repository';
 import { ApiResponse, SUCCESS, ERROR } from '../responses';
 import { ApiResponseRecords } from 'src/responses/api.response';
-import { CreateWorkshopDto } from 'src/entities/dto/index';
+import { CreateWorkshopDto, NitWorkshopDto } from 'src/entities/dto/index';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
 import { PaginationVerifier } from 'src/entities/pagination';
 import { Roles } from 'src/entities/enum/role.enum';
@@ -57,25 +57,36 @@ export class WorkshopService {
     }
   }
 
-  async findById(userDecode: any): Promise<ApiResponse> {
+  async findById(userDecode: any, dto: NitWorkshopDto): Promise<ApiResponse> {
     if (
       userDecode.role.role === Roles.ROOT ||
       userDecode.role.role === Roles.ADMIN ||
       userDecode.role.role === Roles.USER
     ) {
-      const workshopOther = await this.workshopRepository
-        .createQueryBuilder('workshop')
-        .leftJoinAndSelect('workshop.users', 'user')
-        .loadRelationCountAndMap('workshop.limit', 'workshop.users')
-        .where('workshop.state = true AND user.id = :id', {
-          id: userDecode.id,
-        })
-        .getOne();
+      let workshop;
+      if (dto.nit.length > 0) {
+        workshop = await this.workshopRepository
+          .createQueryBuilder('workshop')
+          .leftJoinAndSelect('workshop.users', 'user')
+          .loadRelationCountAndMap('workshop.limit', 'workshop.users')
+          .where('workshop.nit = :nit AND workshop.state = true', {
+            nit: dto.nit,
+          })
+          .getOne();
+      } else {
+        workshop = await this.workshopRepository
+          .createQueryBuilder('workshop')
+          .leftJoinAndSelect('workshop.users', 'user')
+          .loadRelationCountAndMap('workshop.limit', 'workshop.users')
+          .where('workshop.state = true AND user.id = :id', {
+            id: userDecode.id,
+          })
+          .getOne();
+      }
 
-      if (!workshopOther)
-        return new ApiResponse(false, ERROR.WORKSHOP_NOT_FOUND);
+      if (!workshop) return new ApiResponse(false, ERROR.WORKSHOP_NOT_FOUND);
 
-      return new ApiResponse(true, SUCCESS.WORKSHOP_FOUND, workshopOther);
+      return new ApiResponse(true, SUCCESS.WORKSHOP_FOUND, workshop);
     }
   }
 

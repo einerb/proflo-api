@@ -23,7 +23,7 @@ import {
 
 import { ApiResponse } from '../responses';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateWorkshopDto } from 'src/entities/dto/index';
+import { CreateWorkshopDto, NitWorkshopDto } from 'src/entities/dto/index';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
 import { AuthService, WorkshopService } from 'src/services/';
 import { UpdateWorkshopDto } from 'src/entities/dto/update-workshop.dto';
@@ -49,11 +49,11 @@ export class WorkshopController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('/nit')
-  async getById(@Req() request) {
+  async getById(@Body() nit: NitWorkshopDto, @Req() request) {
     const rawToken = request.headers['authorization'].split(' ')[1];
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
-    return await this.workshopService.findById(tokenDecode);
+    return await this.workshopService.findById(tokenDecode, nit);
   }
 
   @UseGuards(AuthGuard('jwt'))

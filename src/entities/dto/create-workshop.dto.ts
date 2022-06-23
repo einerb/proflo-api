@@ -34,3 +34,8 @@ export class CreateWorkshopDto {
   @IsNotEmpty()
   state?: boolean;
 }
+
+export class NitWorkshopDto {
+  @ApiProperty()
+  nit: string;
+}
