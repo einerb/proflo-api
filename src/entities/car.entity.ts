@@ -3,7 +3,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   BaseEntity,
-  OneToMany,
   DeleteDateColumn,
 } from 'typeorm';
 
@@ -15,13 +14,13 @@ export class CarEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 7, nullable: false })
   plate: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   color: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   brand: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: false })
+  @Column({ type: 'varchar', length: 25, nullable: false })
   line: string;
 
   @Column({ type: 'date', nullable: false })
