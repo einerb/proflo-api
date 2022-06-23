@@ -28,6 +28,7 @@ export class AuthService {
     return new ApiResponse(true, SUCCESS.USER_LOGIN, {
       expiresIn,
       accessToken,
+      ...user.role,
     });
   }
 
