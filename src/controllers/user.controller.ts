@@ -16,8 +16,6 @@ import {
 
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto, UpdateUserDto } from 'src/entities/dto/index';
-import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
-import { ApiResponse } from 'src/responses';
 import { AuthService, UserService } from 'src/services/';
 
 @Controller('user')
@@ -37,6 +35,13 @@ export class UserController {
     const tokenDecode = this.authService.decodingJWT(rawToken);
 
     return await this.userService.findById(tokenDecode.role, identification);
+  }
+
+  @Get(':identification/public')
+  async getByIdPublic(
+    @Param('identification', ParseIntPipe) identification: number,
+  ) {
+    return await this.userService.findByIdPublic(identification);
   }
 
   @UseGuards(AuthGuard('jwt'))

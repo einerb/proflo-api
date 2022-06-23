@@ -80,6 +80,28 @@ export class UserService {
     return new ApiResponse(true, SUCCESS.USER_FOUND, user);
   }
 
+  async findByIdPublic(identification: number): Promise<ApiResponse> {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('user.car', 'car')
+      .leftJoinAndSelect('user.licenses', 'licenses')
+      .leftJoinAndSelect('user.services', 'services')
+      .leftJoinAndSelect('user.notifications', 'notifications')
+      .leftJoinAndSelect('services.news', 'news')
+      .where(
+        'user.identification = :identification AND user.state = true AND user.role != 1',
+        {
+          identification: identification,
+        },
+      )
+      .getOne();
+
+    if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
+
+    return new ApiResponse(true, SUCCESS.USER_FOUND, user);
+  }
+
   async getByIdentification(identification: number): Promise<UserEntity> {
     return await this.userRepository.findOne({
       where: {
