@@ -72,6 +72,7 @@ export class WorkshopService {
         workshop = await this.workshopRepository
           .createQueryBuilder('workshop')
           .leftJoinAndSelect('workshop.users', 'user')
+          .leftJoinAndSelect('user.car', 'car')
           .loadRelationCountAndMap('workshop.limit', 'workshop.users')
           .where('workshop.nit = :nit AND workshop.state = true', {
             nit: dto.nit,
@@ -81,6 +82,7 @@ export class WorkshopService {
         workshop = await this.workshopRepository
           .createQueryBuilder('workshop')
           .leftJoinAndSelect('workshop.users', 'user')
+          .leftJoinAndSelect('user.car', 'car')
           .loadRelationCountAndMap('workshop.limit', 'workshop.users')
           .where('workshop.state = true AND user.id = :id', {
             id: userDecode.id,

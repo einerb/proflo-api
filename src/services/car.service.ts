@@ -20,7 +20,7 @@ export class CarService {
     const car = await this.carRepository
       .createQueryBuilder('car')
       .where('car.plate = :plate AND car.state = true', {
-        plate: plate,
+        plate: plate.toUpperCase(),
       })
       .getOne();
 
@@ -40,7 +40,7 @@ export class CarService {
     let regexPlate = new RegExp(
       /^[a-zA-Z]{3}[0-9]{3}|[a-zA-Z]{3}[0-9]{2}[a-zA-Z]/g,
     );
-    if (regexPlate.test(plate)) return true;
+    if (regexPlate.test(plate.toUpperCase())) return true;
 
     return false;
   }
@@ -105,7 +105,7 @@ export class CarService {
       return new ApiResponse(false, ERROR.PLATE_NOT_VALID);
 
     const car = await this.carRepository.findOne({
-      where: { plate: plate },
+      where: { plate: plate.toUpperCase() },
     });
 
     if (!car) return new ApiResponse(false, ERROR.CAR_NOT_FOUND);
