@@ -30,6 +30,12 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 45, nullable: true })
   lastname: string;
 
+  @Column({ type: 'boolean', nullable: false, default: true })
+  gender?: boolean;
+
+  @Column({ type: 'text', nullable: true })
+  avatar?: string;
+
   @ManyToOne(() => RoleEntity, (role) => role.id)
   @JoinColumn({ name: 'role_id' })
   role: RoleEntity;

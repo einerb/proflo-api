@@ -32,6 +32,11 @@ export class CreateUserDto {
   @IsOptional()
   lastname?: string;
 
+  @ApiProperty()
+  @IsBoolean()
+  @IsNotEmpty()
+  gender?: boolean;
+
   @ApiProperty({
     description:
       'Se manejara 3 tipos de roles los cuales tendran ciertas acciones permitidas',

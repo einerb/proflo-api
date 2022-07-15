@@ -181,7 +181,15 @@ export class UserService {
         return new ApiResponse(false, ERROR.WORKSHOP_ADMIN_LIMIT);
       } else {
         let user = await this.userRepository.create(dto);
+
+        let avatarMan = Math.floor(Math.random() * 6) + 1;
+        let avatarWoman = Math.floor(Math.random() * 4) + 1;
+        let avatar = dto.gender ? avatarMan + 'man' : avatarWoman + 'woman';
+
+        let cloudinaryAvatar = `https://res.cloudinary.com/dclbq0rdh/image/upload/v1657855765/avatars/avatar${avatar}.png`;
+        user.avatar = <any>cloudinaryAvatar;
         user.role = <any>role;
+
         user = await this.userRepository.save(user);
         user.workshops = [workshop];
         await this.userRepository.save(user);

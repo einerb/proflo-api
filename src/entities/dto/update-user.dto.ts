@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsDate,
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-} from 'class-validator';
+import { IsBoolean, IsDate, IsNotEmpty, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 
 import { IsNotBlank } from 'src/decorators/is-not-blank.decorator';
@@ -19,6 +13,11 @@ export class UpdateUserDto {
   @ApiProperty()
   @IsOptional()
   lastname?: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  @IsNotEmpty()
+  gender?: boolean;
 
   @ApiProperty()
   @IsOptional()
