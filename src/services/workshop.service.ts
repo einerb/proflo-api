@@ -31,6 +31,7 @@ export class WorkshopService {
         .leftJoinAndSelect('workshop.users', 'user')
         .leftJoinAndSelect('user.licenses', 'licenses')
         .leftJoinAndSelect('user.car', 'car')
+        .leftJoinAndSelect('user.role', 'role')
         .where(
           'workshop.created_at >= :start AND workshop.created_at <= :end AND workshop.state = true',
           {

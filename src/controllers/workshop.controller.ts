@@ -10,16 +10,9 @@ import {
   Query,
   Req,
   UseGuards,
-  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiTags,
-  ApiOperation,
-  ApiResponse as AR,
-} from '@nestjs/swagger';
 
 import { ApiResponse } from '../responses';
 import { AuthGuard } from '@nestjs/passport';
@@ -48,7 +41,7 @@ export class WorkshopController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/nit')
+  @Post('/nit')
   async getById(@Body() nit: NitWorkshopDto, @Req() request) {
     const rawToken = request.headers['authorization'].split(' ')[1];
     const tokenDecode = this.authService.decodingJWT(rawToken);

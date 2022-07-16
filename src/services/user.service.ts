@@ -3,9 +3,15 @@ import { Injectable } from '@nestjs/common';
 
 import { ApiResponse, SUCCESS, ERROR } from '../responses';
 import { CreateUserDto, UpdateUserDto } from 'src/entities/dto/index';
-import { WorkshopEntity, UserEntity } from 'src/entities/index';
+import {
+  WorkshopEntity,
+  UserEntity,
+  PaginationVerifier,
+} from 'src/entities/index';
 import { UserRepository, WorkshopRepository } from '../repositories/index';
 import { Roles } from 'src/entities/enum/role.enum';
+import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
+import { ApiResponseRecords } from 'src/responses/api.response';
 
 @Injectable()
 export class UserService {
@@ -29,6 +35,40 @@ export class UserService {
     }
 
     return false;
+  }
+
+  async getAll(
+    userDecode: any,
+    pagination: IPaginationWithDates,
+  ): Promise<ApiResponse> {
+    if (userDecode.role === Roles.ROOT) {
+      if (!PaginationVerifier.verifyIPagination(pagination))
+        return ApiResponse.paginationWithDatesNotProvidedError();
+
+      const result = await this.userRepository
+        .createQueryBuilder('user')
+        .leftJoinAndSelect('user.role', 'role')
+        .where('user.created_at >= :start AND user.created_at <= :end', {
+          start: pagination.start,
+          end: pagination.end,
+        })
+        .skip(
+          Math.max(0, (pagination.pageNumber - 1) * pagination.pageElements),
+        )
+        .take(pagination.pageElements)
+        .orderBy('user.createdAt', 'DESC')
+        .getManyAndCount();
+
+      if (!result.length) new ApiResponse(false, ERROR.USER_NOT_FOUND);
+
+      return new ApiResponse(
+        true,
+        SUCCESS.USERS_FOUND,
+        new ApiResponseRecords(result, pagination),
+      );
+    } else {
+      return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
+    }
   }
 
   async findById(
