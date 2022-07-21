@@ -12,6 +12,8 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { CarEntity, LicenseEntity, NotificationEntity , RoleEntity, ServiceEntity, WorkshopEntity } from './index';
@@ -86,14 +88,14 @@ export class UserEntity extends BaseEntity {
   })
   workshops: WorkshopEntity[];
 
-  @Column({
+  @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

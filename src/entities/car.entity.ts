@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   DeleteDateColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'cars' })
@@ -104,14 +106,14 @@ export class CarEntity extends BaseEntity {
   @Column({ type: 'boolean', nullable: true })
   state: boolean;
 
-  @Column({
+  @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

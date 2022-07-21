@@ -6,6 +6,8 @@ import {
   OneToMany,
   DeleteDateColumn,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { States } from './enum/state.enum';
@@ -38,14 +40,14 @@ export class ServiceEntity extends BaseEntity {
   @ManyToOne(() => UserEntity, (user) => user.services)
   users: UserEntity;
 
-  @Column({
+  @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

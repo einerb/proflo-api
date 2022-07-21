@@ -3,10 +3,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   BaseEntity,
-  OneToMany,
   DeleteDateColumn,
   ManyToMany,
-  JoinTable,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { UserEntity } from './user.entity';
@@ -40,14 +40,14 @@ export class WorkshopEntity extends BaseEntity {
   @ManyToMany(() => UserEntity, (user) => user.workshops)
   users: UserEntity[];
 
-  @Column({
+  @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

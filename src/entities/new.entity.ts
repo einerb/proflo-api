@@ -5,6 +5,8 @@ import {
   BaseEntity,
   DeleteDateColumn,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { ServiceEntity } from './service.entity';
@@ -26,14 +28,14 @@ export class NewEntity extends BaseEntity {
   @ManyToOne(() => ServiceEntity, (service) => service.news)
   services: ServiceEntity;
 
-  @Column({
+  @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

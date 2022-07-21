@@ -5,6 +5,8 @@ import {
   BaseEntity,
   DeleteDateColumn,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 
@@ -25,14 +27,14 @@ export class NotificationEntity extends BaseEntity {
   @ManyToOne(() => UserEntity, (user) => user.notifications)
   users: UserEntity;
 
-  @Column({
+  @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

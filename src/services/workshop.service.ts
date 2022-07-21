@@ -33,7 +33,7 @@ export class WorkshopService {
         .leftJoinAndSelect('user.car', 'car')
         .leftJoinAndSelect('user.role', 'role')
         .where(
-          'workshop.created_at >= :start AND workshop.created_at <= :end AND workshop.state = true',
+          'workshop.created_at >= :start AND workshop.created_at <= :end',
           {
             start: pagination.start,
             end: pagination.end,
@@ -75,7 +75,7 @@ export class WorkshopService {
           .leftJoinAndSelect('workshop.users', 'user')
           .leftJoinAndSelect('user.car', 'car')
           .loadRelationCountAndMap('workshop.limit', 'workshop.users')
-          .where('workshop.nit = :nit AND workshop.state = true', {
+          .where('workshop.nit = :nit', {
             nit: dto.nit,
           })
           .getOne();
@@ -85,7 +85,7 @@ export class WorkshopService {
           .leftJoinAndSelect('workshop.users', 'user')
           .leftJoinAndSelect('user.car', 'car')
           .loadRelationCountAndMap('workshop.limit', 'workshop.users')
-          .where('workshop.state = true AND user.id = :id', {
+          .where('user.id = :id', {
             id: userDecode.id,
           })
           .getOne();
