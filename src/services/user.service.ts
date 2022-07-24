@@ -48,6 +48,7 @@ export class UserService {
       const result = await this.userRepository
         .createQueryBuilder('user')
         .leftJoinAndSelect('user.role', 'role')
+        .leftJoinAndSelect('user.workshops', 'workshops')
         .where('user.created_at >= :start AND user.created_at <= :end', {
           start: pagination.start,
           end: pagination.end,
@@ -79,6 +80,7 @@ export class UserService {
     const preUser = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('user.workshops', 'workshops')
       .where('user.identification = :identification AND user.state = true', {
         identification: identification,
       })
@@ -155,6 +157,7 @@ export class UserService {
       .createQueryBuilder('user')
       .addSelect('user.password')
       .leftJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('user.workshops', 'workshops')
       .where('user.email = :email', { email: email })
       .getOne();
   }

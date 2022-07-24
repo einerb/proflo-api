@@ -25,10 +25,12 @@ export class AuthService {
       this.configService.get(Config.JWT_ENCRYPTION),
       { expiresIn },
     );
+
     return new ApiResponse(true, SUCCESS.USER_LOGIN, {
       expiresIn,
       accessToken,
       ...user.role,
+      ...user.workshops,
     });
   }
 

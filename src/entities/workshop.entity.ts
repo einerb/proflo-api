@@ -16,7 +16,7 @@ export class WorkshopEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', nullable: false, unique: true })
+  @Column({ type: 'varchar', nullable: false, unique: false })
   nit: string;
 
   @Column({ type: 'varchar', length: 45, nullable: false })

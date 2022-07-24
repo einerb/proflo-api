@@ -74,6 +74,8 @@ export class WorkshopService {
           .createQueryBuilder('workshop')
           .leftJoinAndSelect('workshop.users', 'user')
           .leftJoinAndSelect('user.car', 'car')
+          .leftJoinAndSelect('user.role', 'role')
+          .leftJoinAndSelect('user.licenses', 'license')
           .loadRelationCountAndMap('workshop.limit', 'workshop.users')
           .where('workshop.nit = :nit', {
             nit: dto.nit,

@@ -64,9 +64,8 @@ export class CreateUserDto {
   address?: string;
 
   @ApiProperty()
-  @IsDate()
-  @Type(() => Date)
-  birthdate?: Date;
+  @IsOptional()
+  birthdate?: string;
 
   @ApiProperty()
   @IsOptional()

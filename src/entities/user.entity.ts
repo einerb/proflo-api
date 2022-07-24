@@ -16,7 +16,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { CarEntity, LicenseEntity, NotificationEntity , RoleEntity, ServiceEntity, WorkshopEntity } from './index';
+import {
+  CarEntity,
+  LicenseEntity,
+  NotificationEntity,
+  RoleEntity,
+  ServiceEntity,
+  WorkshopEntity,
+} from './index';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
@@ -51,8 +58,8 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 70, nullable: true })
   address: string;
 
-  @Column({ type: 'date', nullable: true })
-  birthdate: Date;
+  @Column({ type: 'varchar', nullable: true })
+  birthdate: string;
 
   @Column({ type: 'varchar', length: 12, nullable: true })
   phone: string;
