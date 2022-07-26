@@ -211,7 +211,8 @@ export function GET_ERROR(error): Error {
     case ERROR.NIT_NO_EXIST:
       return {
         code: 37,
-        error: 'Debe enviar el parametro <<nit>> dentro de la data del body. Ejemplo: { "nit": "" }!',
+        error:
+          'Debe enviar el parametro <<nit>> dentro de la data del body. Ejemplo: { "nit": "" }!',
       };
   }
 }

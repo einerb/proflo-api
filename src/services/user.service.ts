@@ -81,7 +81,7 @@ export class UserService {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.role', 'role')
       .leftJoinAndSelect('user.workshops', 'workshops')
-      .where('user.identification = :identification AND user.state = true', {
+      .where('user.identification = :identification', {
         identification: identification,
       })
       .getOne();
@@ -103,10 +103,11 @@ export class UserService {
       .leftJoinAndSelect('user.car', 'car')
       .leftJoinAndSelect('user.licenses', 'licenses')
       .leftJoinAndSelect('user.services', 'services')
+      .leftJoinAndSelect('user.workshops', 'workshops')
       .leftJoinAndSelect('user.notifications', 'notifications')
       .leftJoinAndSelect('services.news', 'news')
       .where(
-        'user.identification = :identification AND user.state = true AND user.role_id >= :role',
+        'user.identification = :identification AND user.role_id >= :role',
         {
           identification: identification,
           role: role,
@@ -119,7 +120,7 @@ export class UserService {
     if (!this.permissionRoles(preUser.role.id, userDecode.role))
       return new ApiResponse(false, ERROR.REQUEST_UNAUTHORIZED);
 
-    return new ApiResponse(true, SUCCESS.USER_FOUND, user);
+    return new ApiResponse(true, SUCCESS.USER_FOUND, ...user);
   }
 
   async findByIdPublic(identification: number): Promise<ApiResponse> {
@@ -131,12 +132,9 @@ export class UserService {
       .leftJoinAndSelect('user.services', 'services')
       .leftJoinAndSelect('user.notifications', 'notifications')
       .leftJoinAndSelect('services.news', 'news')
-      .where(
-        'user.identification = :identification AND user.state = true AND user.role != 1',
-        {
-          identification: identification,
-        },
-      )
+      .where('user.identification = :identification AND user.role != 1', {
+        identification: identification,
+      })
       .getOne();
 
     if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
@@ -237,7 +235,7 @@ export class UserService {
         user.workshops = [workshop];
         await this.userRepository.save(user);
 
-        return new ApiResponse(true, SUCCESS.USER_CREATED);
+        return new ApiResponse(true, SUCCESS.USER_CREATED, user.identification);
       }
     }
   }
