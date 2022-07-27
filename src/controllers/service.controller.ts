@@ -28,9 +28,9 @@ export class ServiceController {
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Get(':id')
-  async getById(@Param('id', ParseIntPipe) id: number) {
-    return await this.serviceService.findById(id);
+  @Get(':hash')
+  async getById(@Param('hash') hash: string) {
+    return await this.serviceService.findById(hash);
   }
 
   @UseGuards(AuthGuard('jwt'))

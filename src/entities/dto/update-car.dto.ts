@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDate,
-  IsEmpty,
+  IsOptional,
   IsNotEmpty,
   IsNumber,
 } from 'class-validator';
@@ -65,7 +65,7 @@ export class UpdateCarDto {
   @ApiProperty({
     description: 'Pais de origen del vehiculo',
   })
-  @IsEmpty()
+  @IsOptional()
   countryOrigin: string;
 
   @ApiProperty({
@@ -199,15 +199,14 @@ export class UpdateCarDto {
   @ApiProperty({
     description: 'Nivel del blindado',
   })
-  @IsEmpty()
+  @IsOptional()
   levelShielding: string;
 
   @ApiProperty({
     description: 'Fecha del blindaje',
   })
-  @IsEmpty()
-  @Type(() => Date)
-  dateShielding: Date;
+  @IsOptional()
+  dateShielding: string;
 
   @ApiProperty({
     description: 'Estado del vehiculo en los diferentes entes nacionales',

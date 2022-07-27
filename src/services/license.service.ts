@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { LicenseEntity, UserEntity } from 'src/entities';
+import { LicenseEntity, PaginationVerifier, UserEntity } from 'src/entities';
 import { CreateLicenseDto } from 'src/entities/dto/create-license.dto';
 import { Roles } from 'src/entities/enum/role.enum';
 import { UserRepository } from 'src/repositories';
@@ -16,6 +16,21 @@ export class LicenseService {
     @InjectRepository(UserEntity)
     private userRepository: UserRepository,
   ) {}
+
+  async getAll(identification: number): Promise<ApiResponse> {
+    const user = await this.userRepository.findOne({
+      where: {
+        identification: identification,
+      },
+    });
+    if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
+
+    const result = await this.licenseRepository.find();
+
+    if (!result.length) new ApiResponse(false, ERROR.LICENSE_NOT_FOUND);
+
+    return new ApiResponse(true, SUCCESS.LICENSE_FOUND, result);
+  }
 
   async create(
     userDecode: any,

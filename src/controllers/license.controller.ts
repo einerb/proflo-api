@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateLicenseDto } from 'src/entities/dto/create-license.dto';
+import { ApiResponse } from 'src/responses';
 
 import { LicenseService, AuthService } from 'src/services/';
 
@@ -23,6 +24,14 @@ export class LicenseController {
     private readonly licenseService: LicenseService,
     private readonly authService: AuthService,
   ) {}
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':identification')
+  async getAll(
+    @Param('identification', ParseIntPipe) identification: number,
+  ): Promise<ApiResponse> {
+    return await this.licenseService.getAll(identification);
+  }
 
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))

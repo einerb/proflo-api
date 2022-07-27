@@ -23,14 +23,15 @@ export class ServiceService {
     private readonly notificationService: NotificationService,
   ) {}
 
-  async findById(id: number): Promise<ApiResponse> {
+  async findById(hash: string): Promise<ApiResponse> {
     const service = await this.serviceRepository
       .createQueryBuilder('service')
       .leftJoinAndSelect('service.users', 'user')
       .leftJoinAndSelect('service.news', 'new')
-      .where('service.id = :id', {
-        id: id,
+      .where('service.hash = :hash', {
+        hash: hash,
       })
+      .orderBy('new', 'DESC')
       .getOne();
 
     if (!service) return new ApiResponse(false, ERROR.SERVICE_NOT_FOUND);

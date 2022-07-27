@@ -271,6 +271,8 @@ export class UserService {
 
       if (!user) return new ApiResponse(false, ERROR.USER_NOT_FOUND);
 
+      user.car = null;
+      await this.userRepository.save(user);
       this.userRepository.softDelete({ id: id });
 
       return new ApiResponse(true, SUCCESS.USER_DELETED);

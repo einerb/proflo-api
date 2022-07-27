@@ -28,6 +28,7 @@ export enum SUCCESS {
   LICENSE_CREATED,
   LICENSE_UPDATED,
   LICENSE_DELETED,
+  LICENSE_FOUND,
   NEW_FOUND,
   NEW_CREATED,
   SERVICE_COMPLETED,
@@ -161,5 +162,7 @@ export function GET_SUCCESS(success): Success {
       };
     case SUCCESS.NEW_DELETED:
       return { code: 35, message: 'Novedad eliminada exitosamente!' };
+    case SUCCESS.LICENSE_FOUND:
+      return { code: 36, message: 'Licencias encontradas!' };
   }
 }
