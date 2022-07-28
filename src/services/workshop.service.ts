@@ -76,6 +76,7 @@ export class WorkshopService {
           .leftJoinAndSelect('user.car', 'car')
           .leftJoinAndSelect('user.role', 'role')
           .leftJoinAndSelect('user.licenses', 'license')
+          .leftJoinAndSelect('user.services', 'services')
           .loadRelationCountAndMap('workshop.limit', 'workshop.users')
           .where('workshop.nit = :nit', {
             nit: dto.nit,
