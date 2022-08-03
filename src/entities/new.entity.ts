@@ -16,7 +16,7 @@ export class NewEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 20, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   name: string;
 
   @Column({ type: 'text', nullable: false })

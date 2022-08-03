@@ -33,10 +33,10 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'int', nullable: false })
   identification: number;
 
-  @Column({ type: 'varchar', length: 45, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', length: 45, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   lastname: string;
 
   @Column({ type: 'boolean', nullable: false, default: true })

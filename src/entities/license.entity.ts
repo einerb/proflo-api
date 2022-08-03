@@ -24,7 +24,7 @@ export class LicenseEntity extends BaseEntity {
   @Column({ type: 'date', nullable: true })
   dueDate: Date;
 
-  @Column({ type: 'varchar', length: 7, nullable: false })
+  @Column({ type: 'varchar', length: 10, nullable: false })
   statusLicense: string;
 
   @Column({ type: 'boolean', nullable: true })
