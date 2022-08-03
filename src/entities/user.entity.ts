@@ -33,7 +33,7 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'int', nullable: false })
   identification: number;
 
-  @Column({ type: 'varchar', length: 50, nullable: true, default: null })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   name: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })

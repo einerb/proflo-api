@@ -28,7 +28,7 @@ export class CarEntity extends BaseEntity {
   @Column({ type: 'date', nullable: false })
   enrollmentDate: Date;
 
-  @Column({ type: 'varchar', length: 50, nullable: true, default: null })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   typeVehicle: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
