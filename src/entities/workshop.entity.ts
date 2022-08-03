@@ -19,7 +19,7 @@ export class WorkshopEntity extends BaseEntity {
   @Column({ type: 'varchar', nullable: false, unique: false })
   nit: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   name: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })

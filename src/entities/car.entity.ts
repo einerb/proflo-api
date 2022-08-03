@@ -28,49 +28,49 @@ export class CarEntity extends BaseEntity {
   @Column({ type: 'date', nullable: false })
   enrollmentDate: Date;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true, default: null })
   typeVehicle: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   typeService: string;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
+  @Column({ type: 'varchar', length: 10, nullable: true })
   model: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
   countryOrigin: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   noSerie: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   noMotor: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   noChasis: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   noVin: string;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
+  @Column({ type: 'varchar', length: 10, nullable: true })
   tonnage: string;
 
   @Column({ type: 'int', nullable: false })
   divipola: number;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
+  @Column({ type: 'varchar', length: 10, nullable: true })
   cylinder: string;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
+  @Column({ type: 'varchar', length: 10, nullable: true })
   pbv: string;
 
-  @Column({ type: 'varchar', length: 6, nullable: false })
+  @Column({ type: 'varchar', length: 6, nullable: true })
   occupant: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   bodywork: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   fuel: string;
 
   @Column({ type: 'text', nullable: false })
@@ -100,7 +100,7 @@ export class CarEntity extends BaseEntity {
   @Column({ type: 'date', nullable: true })
   dateShielding: Date;
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
+  @Column({ type: 'varchar', length: 10, nullable: true })
   statusVehicle: string;
 
   @Column({ type: 'boolean', nullable: true })
