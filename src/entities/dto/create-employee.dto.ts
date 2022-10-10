@@ -23,12 +23,11 @@ export class CreateEmployeeDto {
   lastname?: string;
 
   @ApiProperty()
-  @IsOptional()
+  @IsNotBlank({ message: 'El campo <<ocupacion>> no puede estar vacío!' })
   occupation?: string;
 
   @ApiProperty()
-  @IsNotBlank({ message: 'El campo <<ciudad>> no puede estar vacío!' })
-  @IsNotEmpty()
+  @IsOptional()
   city?: string;
 
   @ApiProperty()

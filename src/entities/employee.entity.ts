@@ -21,16 +21,16 @@ export class EmployeeEntity extends BaseEntity {
   @Column({ type: 'int', nullable: false })
   identification: number;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: false })
   name: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
   lastname: string;
 
-  @Column({ type: 'varchar', length: 70, nullable: true })
+  @Column({ type: 'varchar', length: 70, nullable: false })
   occupation: string;
 
-  @Column({ type: 'varchar', length: 70, nullable: false })
+  @Column({ type: 'varchar', length: 70, nullable: true })
   city: string;
 
   @Column({ type: 'varchar', length: 70, nullable: true })
