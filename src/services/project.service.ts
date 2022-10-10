@@ -7,6 +7,7 @@ import { PaginationVerifier, ProjectEntity } from 'src/entities/index';
 import { ProjectRepository } from '../repositories/index';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
 import { ApiResponseRecords } from 'src/responses/api.response';
+import { CreateProjectDto } from 'src/entities/dto/create-project.dto';
 
 @Injectable()
 export class ProjectService {
@@ -22,7 +23,7 @@ export class ProjectService {
 
     if (!project) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
 
-    return new ApiResponse(true, SUCCESS.EMPLOYEE_FOUND, project);
+    return new ApiResponse(true, SUCCESS.PROJECT_FOUND, project);
   }
 
   async findById(id: number): Promise<ApiResponse> {
@@ -34,17 +35,24 @@ export class ProjectService {
       })
       .getOne();
 
-    if (!project) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
+    if (!project) return new ApiResponse(false, ERROR.PROJECT_NOT_FOUND);
 
-    return new ApiResponse(true, SUCCESS.EMPLOYEE_FOUND, project);
+    return new ApiResponse(true, SUCCESS.PROJECT_FOUND, project);
   }
 
-  async create(dto: CreateEmployeeDto): Promise<ApiResponse> {
+  async create(dto: CreateProjectDto): Promise<ApiResponse> {
+    if (
+      await this.projectRepository.findOne({
+        where: { name: dto.name },
+      })
+    )
+      return new ApiResponse(false, ERROR.PROJECT_EXIST);
+
     let project = await this.projectRepository.create(dto);
 
     await this.projectRepository.save(project);
 
-    return new ApiResponse(true, SUCCESS.EMPLOYEE_CREATED, project);
+    return new ApiResponse(true, SUCCESS.PROJECT_CREATED, project);
   }
 
   async update(id: number, dto: UpdateEmployeeDto): Promise<ApiResponse> {
@@ -52,7 +60,7 @@ export class ProjectService {
       where: { id: id },
     });
 
-    if (!project) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
+    if (!project) return new ApiResponse(false, ERROR.PROJECT_NOT_FOUND);
 
     await this.projectRepository.update({ id: id }, dto);
 
@@ -64,11 +72,11 @@ export class ProjectService {
       where: { id: id },
     });
 
-    if (!project) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
+    if (!project) return new ApiResponse(false, ERROR.PROJECT_NOT_FOUND);
 
     await this.projectRepository.save(project);
     this.projectRepository.softDelete({ id: id });
 
-    return new ApiResponse(true, SUCCESS.EMPLOYEE_DELETED);
+    return new ApiResponse(true, SUCCESS.PROJECT_DELETED);
   }
 }

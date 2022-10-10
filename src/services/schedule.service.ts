@@ -44,11 +44,11 @@ export class ScheduleService {
       .getManyAndCount();
 
     if (!schedule.length)
-      return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
+      return new ApiResponse(false, ERROR.SCHEDULE_NOT_FOUND);
 
     return new ApiResponse(
       true,
-      SUCCESS.EMPLOYEE_FOUND,
+      SUCCESS.SCHEDULE_FOUND,
       new ApiResponseRecords(schedule, pagination),
     );
   }
@@ -72,7 +72,7 @@ export class ScheduleService {
 
     await this.scheduleRepository.save(schedule);
 
-    return new ApiResponse(true, SUCCESS.EMPLOYEE_CREATED, schedule);
+    return new ApiResponse(true, SUCCESS.SCHEDULE_CREATED, schedule);
   }
 
   async update(id: number, dto: UpdateScheduleDto): Promise<ApiResponse> {
@@ -101,7 +101,7 @@ export class ScheduleService {
       project: <any>dto.projectId,
     });
 
-    return new ApiResponse(true, SUCCESS.EMPLOYEE_UPDATED);
+    return new ApiResponse(true, SUCCESS.SCHEDULE_UPDATED);
   }
 
   async delete(id: number): Promise<any> {
@@ -109,11 +109,11 @@ export class ScheduleService {
       where: { id: id },
     });
 
-    if (!schedule) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
+    if (!schedule) return new ApiResponse(false, ERROR.SCHEDULE_NOT_FOUND);
 
     await this.scheduleRepository.save(schedule);
     this.scheduleRepository.softDelete({ id: id });
 
-    return new ApiResponse(true, SUCCESS.EMPLOYEE_DELETED);
+    return new ApiResponse(true, SUCCESS.SCHEDULE_DELETED);
   }
 }

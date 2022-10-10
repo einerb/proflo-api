@@ -2,13 +2,20 @@ export enum SUCCESS {
   USERS_FOUND,
   USER_FOUND,
   EMPLOYEE_FOUND,
+  SCHEDULE_FOUND,
   EMPLOYEE_CREATED,
   EMPLOYEE_UPDATED,
   EMPLOYEE_DELETED,
+  PROJECT_DELETED,
+  PROJECT_CREATED,
+  SCHEDULE_CREATED,
+  PROJECT_FOUND,
   USER_CREATED,
   USER_VALIDATE,
   USER_LOGIN,
   PASSWORD_UPDATED,
+  SCHEDULE_UPDATED,
+  SCHEDULE_DELETED,
 }
 
 export interface Success {
@@ -50,5 +57,22 @@ export function GET_SUCCESS(success): Success {
       };
     case SUCCESS.USER_CREATED:
       return { code: 10, message: 'Usuario creado exitosamente!' };
+    case SUCCESS.PROJECT_CREATED:
+      return { code: 11, message: 'Proyecto creado exitosamente!' };
+    case SUCCESS.PROJECT_FOUND:
+      return { code: 12, message: 'Proyecto encontrado!' };
+    case SUCCESS.PROJECT_DELETED:
+      return { code: 13, message: 'Proyecto eliminado exitosamente!' };
+    case SUCCESS.SCHEDULE_FOUND:
+      return { code: 14, message: 'Horario encontrado!' };
+    case SUCCESS.SCHEDULE_CREATED:
+      return { code: 15, message: 'Horario registrado exitosamente!' };
+    case SUCCESS.SCHEDULE_UPDATED:
+      return {
+        code: 16,
+        message: 'Información del horario actualizada exitosamente!',
+      };
+    case SUCCESS.SCHEDULE_DELETED:
+      return { code: 17, message: 'Horario eliminado exitosamente!' };
   }
 }
