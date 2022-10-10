@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,32 +8,22 @@ import { Config } from './entities/enum/config.enum';
 
 import {
   AuthModule,
-  CarModule,
   DatabaseModule,
-  LicenseModule,
-  NewModule,
-  NotificationModule,
-  RoleModule,
-  ServiceModule,
+  EmployeeModule,
+  ScheduleModule,
   UserModule,
-  WorkshopModule,
+  ProjectModule
 } from './modules/index';
 
 @Module({
   imports: [
-    /*  MulterModule.register({ dest: './files' }), */
-    ScheduleModule.forRoot(),
-    CarModule,
-    LicenseModule,
-    NewModule,
-    NotificationModule,
-    RoleModule,
-    ServiceModule,
     UserModule,
     AuthModule,
     DatabaseModule,
     ConfigModule,
-    WorkshopModule,
+    EmployeeModule,
+    ScheduleModule,
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],

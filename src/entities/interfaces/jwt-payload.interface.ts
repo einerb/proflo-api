@@ -3,15 +3,6 @@ export interface JwtPayload {
   identification: number;
   name: string;
   lastname: string;
-  role: number;
-  photo: number;
-  users: number;
-  occupation: string;
-  city: string;
-  address: string;
-  birthdate: string;
-  phone: string;
-  email: string;
   state: boolean;
 }
 

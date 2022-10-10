@@ -10,7 +10,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
 
   const options = new DocumentBuilder()
-    .setTitle('GestiCar')
+    .setTitle('PROFLO')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, options);

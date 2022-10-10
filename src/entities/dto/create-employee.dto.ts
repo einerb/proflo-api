@@ -1,17 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsDate,
-  IsEmail,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional } from 'class-validator';
 
 import { IsLength } from 'src/decorators/length.decorator';
 import { IsNotBlank } from 'src/decorators/is-not-blank.decorator';
 
-export class CreateUserDto {
+export class CreateEmployeeDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsLength({
@@ -30,9 +23,21 @@ export class CreateUserDto {
   lastname?: string;
 
   @ApiProperty()
-  @IsNotBlank({ message: 'El campo <<contraseña>> no puede estar vacío!' })
+  @IsOptional()
+  occupation?: string;
+
+  @ApiProperty()
+  @IsNotBlank({ message: 'El campo <<ciudad>> no puede estar vacío!' })
   @IsNotEmpty()
-  password?: string;
+  city?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  address?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  phone?: string;
 
   @ApiProperty()
   @IsBoolean()
