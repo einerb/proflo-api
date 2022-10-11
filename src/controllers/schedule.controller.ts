@@ -15,10 +15,8 @@ import {
 
 import { AuthGuard } from '@nestjs/passport';
 import { CreateScheduleDto } from 'src/entities/dto/create-schedule.dto';
-import { CreateEmployeeDto, UpdateEmployeeDto } from 'src/entities/dto/index';
 import { UpdateScheduleDto } from 'src/entities/dto/update-schedule.dto';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
-import { ApiResponse } from 'src/responses';
 import { ScheduleService } from 'src/services/schedule.service';
 
 @Controller('schedule')
@@ -27,7 +25,9 @@ export class ScheduleController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  async get(@Query() pagination: IPaginationWithDates) {
+  async get(
+    @Query() pagination: IPaginationWithDates,
+  ) {
     return await this.scheduleService.find(pagination);
   }
 

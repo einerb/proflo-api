@@ -43,6 +43,7 @@ export class AuthService {
 
     return new ApiResponse(true, SUCCESS.USER_LOGIN, {
       expiresIn,
+      user: user.state,
       accessToken,
     });
   }

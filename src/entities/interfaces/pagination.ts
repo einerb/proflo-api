@@ -6,6 +6,7 @@ export interface IPagination {
 export interface IPaginationWithDates extends IPagination {
   start: Date;
   end: Date;
+  journey: string;
 }
 
 export interface IPaginationWithDatesAndState extends IPaginationWithDates {

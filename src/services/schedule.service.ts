@@ -26,7 +26,9 @@ export class ScheduleService {
     private projectRepository: ProjectRepository,
   ) {}
 
-  async find(pagination: IPaginationWithDates): Promise<ApiResponse> {
+  async find(
+    pagination: IPaginationWithDates,
+  ): Promise<ApiResponse> {
     if (!PaginationVerifier.verifyIPagination(pagination))
       return ApiResponse.paginationWithDatesNotProvidedError();
 
@@ -34,13 +36,17 @@ export class ScheduleService {
       .createQueryBuilder('schedule')
       .leftJoinAndSelect('schedule.employee', 'employee')
       .leftJoinAndSelect('schedule.project', 'project')
-      .where('schedule.createdAt >= :start AND schedule.createdAt <= :end', {
-        start: pagination.start,
-        end: pagination.end,
-      })
+      .where(
+        'schedule.createdAt >= :start AND schedule.createdAt <= :end AND schedule.journey = :journey',
+        {
+          start: pagination.start,
+          end: pagination.end,
+          journey: pagination.journey,
+        },
+      )
       .skip(Math.max(0, (pagination.pageNumber - 1) * pagination.pageElements))
       .take(pagination.pageElements)
-      .orderBy('schedule.createdAt', 'DESC')
+      .orderBy('employee.name', 'ASC')
       .getManyAndCount();
 
     if (!schedule.length)
