@@ -16,11 +16,7 @@ export class CreateEmployeeDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsNotBlank({ message: 'El campo <<nombre>> no puede estar vacío!' })
-  name?: string;
-
-  @ApiProperty()
-  @IsOptional()
-  lastname?: string;
+  fullname?: string;
 
   @ApiProperty()
   @IsNotBlank({ message: 'El campo <<ocupacion>> no puede estar vacío!' })

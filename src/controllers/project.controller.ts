@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -14,9 +15,7 @@ import {
 
 import { AuthGuard } from '@nestjs/passport';
 import { CreateProjectDto } from 'src/entities/dto/create-project.dto';
-import { CreateEmployeeDto, UpdateEmployeeDto } from 'src/entities/dto/index';
-import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
-import { ApiResponse } from 'src/responses';
+import { IPaginationDate } from 'src/entities/interfaces/pagination';
 import { ProjectService } from 'src/services/project.service';
 
 @Controller('project')
@@ -27,6 +26,15 @@ export class ProjectController {
   @Get()
   async get() {
     return await this.projectService.find();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':name')
+  async getId(
+    @Param('name') name: string,
+    @Query() pagination: IPaginationDate,
+  ) {
+    return await this.projectService.findById(name, pagination);
   }
 
   @UseGuards(AuthGuard('jwt'))

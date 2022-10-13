@@ -2,11 +2,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 
 import { ApiResponse, SUCCESS, ERROR } from '../responses';
-import { CreateEmployeeDto, UpdateEmployeeDto } from 'src/entities/dto/index';
-import { PaginationVerifier, ProjectEntity } from 'src/entities/index';
+import { UpdateEmployeeDto } from 'src/entities/dto/index';
+import { ProjectEntity } from 'src/entities/index';
 import { ProjectRepository } from '../repositories/index';
-import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
-import { ApiResponseRecords } from 'src/responses/api.response';
+import { IPaginationDate } from 'src/entities/interfaces/pagination';
 import { CreateProjectDto } from 'src/entities/dto/create-project.dto';
 
 @Injectable()
@@ -26,13 +25,21 @@ export class ProjectService {
     return new ApiResponse(true, SUCCESS.PROJECT_FOUND, project);
   }
 
-  async findById(id: number): Promise<ApiResponse> {
+  async findById(
+    name: string,
+    pagination: IPaginationDate,
+  ): Promise<ApiResponse> {
     const project = await this.projectRepository
       .createQueryBuilder('project')
-      .leftJoinAndSelect('project.schedules', 'schedules')
-      .where('project.id = :id', {
-        id: id,
-      })
+      .leftJoinAndSelect('project.schedule', 'schedule')
+      .where(
+        "LOWER(project.name) LIKE LOWER(:name) AND schedule.createdAt >= :start AND schedule.createdAt <= :end",
+        {
+          name: '%'+name+'%',
+          start: pagination.start,
+          end: pagination.end,
+        },
+      )
       .getOne();
 
     if (!project) return new ApiResponse(false, ERROR.PROJECT_NOT_FOUND);

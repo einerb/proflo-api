@@ -46,7 +46,7 @@ export class ScheduleService {
       )
       .skip(Math.max(0, (pagination.pageNumber - 1) * pagination.pageElements))
       .take(pagination.pageElements)
-      .orderBy('employee.name', 'ASC')
+      .orderBy('employee.fullname', 'ASC')
       .getManyAndCount();
 
     if (!schedule.length)

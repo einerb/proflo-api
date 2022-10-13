@@ -3,6 +3,11 @@ export interface IPagination {
   pageElements: number;
 }
 
+export interface IPaginationDate {
+  start: number;
+  end: number;
+}
+
 export interface IPaginationWithDates extends IPagination {
   start: Date;
   end: Date;
