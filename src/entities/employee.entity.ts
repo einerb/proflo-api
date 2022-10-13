@@ -6,11 +6,8 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
   OneToMany,
 } from 'typeorm';
-import { ProjectEntity } from './project.entity';
 import { ScheduleEntity } from './schedule.entity';
 
 @Entity({ name: 'employee' })
@@ -22,10 +19,7 @@ export class EmployeeEntity extends BaseEntity {
   identification: number;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
-  name: string;
-
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  lastname: string;
+  fullname: string;
 
   @Column({ type: 'varchar', length: 70, nullable: false })
   occupation: string;
