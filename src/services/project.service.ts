@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 
 import { ApiResponse, SUCCESS, ERROR } from '../responses';
 import { UpdateEmployeeDto } from 'src/entities/dto/index';
-import { ProjectEntity } from 'src/entities/index';
-import { ProjectRepository } from '../repositories/index';
+import { EmployeeEntity, ProjectEntity } from 'src/entities/index';
+import { EmployeeRepository, ProjectRepository } from '../repositories/index';
 import { IPaginationDate } from 'src/entities/interfaces/pagination';
 import { CreateProjectDto } from 'src/entities/dto/create-project.dto';
 
@@ -13,7 +13,9 @@ export class ProjectService {
   constructor(
     @InjectRepository(ProjectEntity)
     private projectRepository: ProjectRepository,
-  ) {}
+    @InjectRepository(EmployeeEntity)
+    private employeeRepository: EmployeeRepository,
+  ) { }
 
   async find(): Promise<ApiResponse> {
     const project = await this.projectRepository
@@ -23,6 +25,38 @@ export class ProjectService {
     if (!project) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
 
     return new ApiResponse(true, SUCCESS.PROJECT_FOUND, project);
+  }
+
+  async findV2(): Promise<ApiResponse> {
+    let occupations = await this.employeeRepository
+      .createQueryBuilder('employee')
+      .select('employee.occupation')
+      .getMany();
+
+    var hash = {};
+    occupations = occupations.filter(function (current) {
+      var exists = !hash[current.occupation];
+      hash[current.occupation] = true;
+      return exists;
+    });
+
+    if (!occupations) return new ApiResponse(false, ERROR.OCCUPATION_NOT_FOUND);
+
+    return new ApiResponse(true, SUCCESS.OCCUPATION_FOUND, occupations);
+  }
+
+  async findEmployee(occupation: string): Promise<ApiResponse> {
+    const employee = await this.employeeRepository
+      .createQueryBuilder('employees')
+      .leftJoinAndSelect('employees.schedules', 'schedules')
+      .where('employees.occupation = :occupation', {
+        occupation: occupation
+      })
+      .getMany();
+
+    if (!employee) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
+
+    return new ApiResponse(true, SUCCESS.EMPLOYEE_FOUND, employee);
   }
 
   async findById(
@@ -35,7 +69,7 @@ export class ProjectService {
       .where(
         "LOWER(project.name) LIKE LOWER(:name) AND schedule.createdAt >= :start AND schedule.createdAt <= :end",
         {
-          name: '%'+name+'%',
+          name: '%' + name + '%',
           start: pagination.start,
           end: pagination.end,
         },

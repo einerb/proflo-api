@@ -10,6 +10,7 @@ export enum ERROR {
   PROJECT_EXIST,
   USER_UNAUTHORIZED,
   USER_FOUND,
+  OCCUPATION_NOT_FOUND
 }
 
 export interface Error {
@@ -35,6 +36,8 @@ export function GET_ERROR(error): Error {
       return { code: 7, error: 'Horario no encontrado!' };
     case ERROR.PROJECT_EXIST:
       return { code: 8, error: 'Proyecto ya existe!' };
+    case ERROR.OCCUPATION_NOT_FOUND:
+      return { code: 9, error: 'Ocupacion no encontrada!' };
     case ERROR.USER_UNAUTHORIZED:
       return {
         code: 12,

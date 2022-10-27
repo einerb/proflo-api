@@ -20,7 +20,7 @@ import { EmployeeService } from 'src/services/';
 
 @Controller('employee')
 export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) {}
+  constructor(private readonly employeeService: EmployeeService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Get(':identification')
@@ -29,12 +29,6 @@ export class EmployeeController {
     @Param('identification', ParseIntPipe) identification: number,
   ) {
     return await this.employeeService.findById(identification, pagination);
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Get()
-  async get() {
-    return await this.employeeService.find();
   }
 
   @UseGuards(AuthGuard('jwt'))

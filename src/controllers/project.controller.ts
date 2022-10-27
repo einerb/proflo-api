@@ -20,12 +20,24 @@ import { ProjectService } from 'src/services/project.service';
 
 @Controller('project')
 export class ProjectController {
-  constructor(private readonly projectService: ProjectService) {}
+  constructor(private readonly projectService: ProjectService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
   async get() {
     return await this.projectService.find();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/occupations')
+  async getV2() {
+    return await this.projectService.findV2();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/occupation/:occupation')
+  async getEmployee(@Param('occupation') occupation: string) {
+    return await this.projectService.findEmployee(occupation);
   }
 
   @UseGuards(AuthGuard('jwt'))

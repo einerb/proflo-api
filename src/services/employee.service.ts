@@ -6,23 +6,24 @@ import { CreateEmployeeDto, UpdateEmployeeDto } from 'src/entities/dto/index';
 import {
   PaginationVerifier,
   EmployeeEntity,
-  ScheduleEntity,
 } from 'src/entities/index';
 import { EmployeeRepository } from '../repositories/index';
 import { IPaginationWithDates } from 'src/entities/interfaces/pagination';
-import { ApiResponseRecords } from 'src/responses/api.response';
 
 @Injectable()
 export class EmployeeService {
   constructor(
     @InjectRepository(EmployeeEntity)
     private employeeRepository: EmployeeRepository,
-  ) {}
+  ) { }
 
-  async find(): Promise<ApiResponse> {
+  async find(occupation: string): Promise<ApiResponse> {
     const employee = await this.employeeRepository
-      .createQueryBuilder('employee')
-      .leftJoinAndSelect('employee.schedules', 'schedules')
+      .createQueryBuilder('employees')
+      .leftJoinAndSelect('employees.schedules', 'schedules')
+      .where('employees.occupation = :occupation', {
+        occupation: occupation
+      })
       .getMany();
 
     if (!employee) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
