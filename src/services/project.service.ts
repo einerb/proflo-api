@@ -27,24 +27,6 @@ export class ProjectService {
     return new ApiResponse(true, SUCCESS.PROJECT_FOUND, project);
   }
 
-  async findV2(): Promise<ApiResponse> {
-    let occupations = await this.employeeRepository
-      .createQueryBuilder('employee')
-      .select('employee.occupation')
-      .getMany();
-
-    var hash = {};
-    occupations = occupations.filter(function (current) {
-      var exists = !hash[current.occupation];
-      hash[current.occupation] = true;
-      return exists;
-    });
-
-    if (!occupations) return new ApiResponse(false, ERROR.OCCUPATION_NOT_FOUND);
-
-    return new ApiResponse(true, SUCCESS.OCCUPATION_FOUND, occupations);
-  }
-
   async findEmployee(occupation: string): Promise<ApiResponse> {
     const employee = await this.employeeRepository
       .createQueryBuilder('employees')

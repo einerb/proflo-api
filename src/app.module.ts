@@ -14,6 +14,7 @@ import {
   UserModule,
   ProjectModule
 } from './modules/index';
+import { OccupationModule } from './modules/occupation.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import {
     EmployeeModule,
     ScheduleModule,
     ProjectModule,
+    OccupationModule
   ],
   controllers: [AppController],
   providers: [AppService],

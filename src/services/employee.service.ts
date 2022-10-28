@@ -17,20 +17,6 @@ export class EmployeeService {
     private employeeRepository: EmployeeRepository,
   ) { }
 
-  async find(occupation: string): Promise<ApiResponse> {
-    const employee = await this.employeeRepository
-      .createQueryBuilder('employees')
-      .leftJoinAndSelect('employees.schedules', 'schedules')
-      .where('employees.occupation = :occupation', {
-        occupation: occupation
-      })
-      .getMany();
-
-    if (!employee) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
-
-    return new ApiResponse(true, SUCCESS.EMPLOYEE_FOUND, employee);
-  }
-
   async findById(
     identification: number,
     pagination: IPaginationWithDates,

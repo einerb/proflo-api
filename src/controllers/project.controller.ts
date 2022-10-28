@@ -29,12 +29,6 @@ export class ProjectController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/occupations')
-  async getV2() {
-    return await this.projectService.findV2();
-  }
-
-  @UseGuards(AuthGuard('jwt'))
   @Get('/occupation/:occupation')
   async getEmployee(@Param('occupation') occupation: string) {
     return await this.projectService.findEmployee(occupation);
