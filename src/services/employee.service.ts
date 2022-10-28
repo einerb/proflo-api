@@ -98,8 +98,12 @@ export class EmployeeService {
 
     if (!employee) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
 
-    await this.employeeRepository.save(employee);
-    this.employeeRepository.softDelete({ id: id });
+    await this.employeeRepository
+      .createQueryBuilder()
+      .delete()
+      .from(EmployeeEntity)
+      .where("id = :id", { id })
+      .execute();
 
     return new ApiResponse(true, SUCCESS.EMPLOYEE_DELETED);
   }

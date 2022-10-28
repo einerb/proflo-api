@@ -24,10 +24,10 @@ export class ScheduleEntity extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   journey: string;
 
-  @ManyToOne(() => EmployeeEntity, (employee) => employee.schedules)
+  @ManyToOne(() => EmployeeEntity, (employee) => employee.schedules, { onDelete: 'CASCADE' })
   employee: EmployeeEntity;
 
-  @ManyToOne(() => ProjectEntity, (project) => project.schedule)
+  @ManyToOne(() => ProjectEntity, (project) => project.schedule, { onDelete: 'CASCADE' })
   project: ProjectEntity;
 
   @CreateDateColumn()

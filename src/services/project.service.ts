@@ -97,8 +97,12 @@ export class ProjectService {
 
     if (!project) return new ApiResponse(false, ERROR.PROJECT_NOT_FOUND);
 
-    await this.projectRepository.save(project);
-    this.projectRepository.softDelete({ id: id });
+    await this.projectRepository
+      .createQueryBuilder()
+      .delete()
+      .from(ProjectEntity)
+      .where("id = :id", { id })
+      .execute();
 
     return new ApiResponse(true, SUCCESS.PROJECT_DELETED);
   }
