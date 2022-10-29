@@ -23,6 +23,13 @@ export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) { }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get()
+  async get(
+  ) {
+    return await this.employeeService.find();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get(':identification')
   async getById(
     @Query() pagination: IPaginationWithDates,

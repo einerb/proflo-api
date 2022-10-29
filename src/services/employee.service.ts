@@ -17,6 +17,17 @@ export class EmployeeService {
     private employeeRepository: EmployeeRepository,
   ) { }
 
+  async find(): Promise<ApiResponse> {
+    const employee = await this.employeeRepository
+      .createQueryBuilder('employee')
+      .getMany();
+
+    if (!employee) return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
+
+
+    return new ApiResponse(true, SUCCESS.EMPLOYEE_FOUND, employee,);
+  }
+
   async findById(
     identification: number,
     pagination: IPaginationWithDates,
