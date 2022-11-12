@@ -72,8 +72,6 @@ export class ScheduleService {
       )
       .getCount();
 
-      console.log(schedule);
-
     return new ApiResponse(
       true,
       SUCCESS.SCHEDULE_TODAY,
