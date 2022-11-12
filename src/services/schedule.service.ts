@@ -62,8 +62,6 @@ export class ScheduleService {
   async findByEmployeeExist(
     id: number
   ): Promise<ApiResponse> {
-
-
     const schedule = await this.scheduleRepository
       .createQueryBuilder('schedule')
       .where(
@@ -74,8 +72,7 @@ export class ScheduleService {
       )
       .getCount();
 
-    if (!schedule)
-      return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
+      console.log(schedule);
 
     return new ApiResponse(
       true,
