@@ -16,7 +16,8 @@ export enum SUCCESS {
   PASSWORD_UPDATED,
   SCHEDULE_UPDATED,
   SCHEDULE_DELETED,
-  OCCUPATION_FOUND
+  OCCUPATION_FOUND,
+  SCHEDULE_TODAY
 }
 
 export interface Success {
@@ -77,5 +78,7 @@ export function GET_SUCCESS(success): Success {
       return { code: 17, message: 'Horario eliminado exitosamente!' };
     case SUCCESS.OCCUPATION_FOUND:
       return { code: 18, message: 'Ocupaciones encontradas!' };
+      case SUCCESS.SCHEDULE_TODAY:
+      return { code: 19, message: 'El registro del empleado fue hecho por HOY!' };
   }
 }

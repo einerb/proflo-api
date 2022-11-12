@@ -59,6 +59,32 @@ export class ScheduleService {
     );
   }
 
+  async findByEmployeeExist(
+    id: number
+  ): Promise<ApiResponse> {
+
+
+    const schedule = await this.scheduleRepository
+      .createQueryBuilder('schedule')
+      .where(
+        'schedule.employeeId = :employee AND DATE(createdAt) = curdate()',
+        {
+          employee: id
+        },
+      )
+      .getCount();
+
+    if (!schedule)
+      return new ApiResponse(false, ERROR.EMPLOYEE_NOT_FOUND);
+
+    return new ApiResponse(
+      true,
+      SUCCESS.SCHEDULE_TODAY,
+      schedule,
+    );
+  }
+
+
   async create(dto: CreateScheduleDto): Promise<ApiResponse> {
     const employee = await this.employeeRepository.findOne({
       where: {

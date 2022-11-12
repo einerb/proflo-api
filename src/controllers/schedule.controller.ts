@@ -31,6 +31,14 @@ export class ScheduleController {
     return await this.scheduleService.find(pagination);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':id')
+  async getByEmployeeExist(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.scheduleService.findByEmployeeExist(id);
+  }
+
   /* @UseGuards(AuthGuard('jwt')) */
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post()
